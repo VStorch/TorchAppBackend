@@ -20,7 +20,7 @@ public class UserController {
     // Endpoint para criar um usuário
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        User savedUser = (User) userRepository.save(user);
+        User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
     }
 
@@ -33,11 +33,11 @@ public class UserController {
     // Endpoint para buscar um usuário pelo ID
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return (ResponseEntity<User>) userRepository.findById(id).map(user -> ResponseEntity.ok(user)).orElseGet(() -> ResponseEntity.notFound().build());
+        return userRepository.findById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Endpoint para atualizar um usuário
-    @PutMapping
+    @PutMapping("/{id")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         if (!userRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
