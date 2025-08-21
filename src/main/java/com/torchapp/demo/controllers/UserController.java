@@ -38,7 +38,7 @@ public class UserController {
     }
 
     // Endpoint para atualizar um usuário
-    @PutMapping("/{id")
+    @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         if (!userRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
