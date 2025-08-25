@@ -57,4 +57,15 @@ public class UserController {
         userRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    // Endpoint para logar o usuário
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@RequestBody User loginRequest) {
+        return userRepository.findAll().stream()
+                .filter(u -> u.getEmail().equals(loginRequest.getEmail()) &&
+                        u.getPassword().equals(loginRequest.getPassword()))
+                .findFirst()
+                .map(ResponseEntity :: ok)
+                .orElse(ResponseEntity.status(401).build());
+    }
 }
