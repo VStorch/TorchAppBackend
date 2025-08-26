@@ -22,7 +22,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         User savedUser = userRepository.save(user);
-        return ResponseEntity.ok(savedUser);
+        return ResponseEntity.status(201).body(savedUser); // 201 Created
     }
 
     // Endpoint para listar todos os usuários
@@ -60,12 +60,20 @@ public class UserController {
 
     // Endpoint para logar o usuário
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User loginRequest) {
+    public ResponseEntity<?> login(@RequestBody User loginRequest) {
         return userRepository.findAll().stream()
                 .filter(u -> u.getEmail().equals(loginRequest.getEmail()) &&
                         u.getPassword().equals(loginRequest.getPassword()))
                 .findFirst()
                 .map(ResponseEntity :: ok)
                 .orElse(ResponseEntity.status(401).build());
+    }
+
+    // Endpoint para verificar se email já existe
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Void> emailExists(@PathVariable String email) {
+        return userRepository.findByEmail(email).isPresent()
+                ? ResponseEntity.ok().build() // 200 Ok
+                : ResponseEntity.notFound().build(); // 404 Not Found
     }
 }
