@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-@Table(name = "Pets")
+@Table(name = "pets")
 public class Pet {
 
     @Id
