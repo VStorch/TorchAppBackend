@@ -25,4 +25,8 @@ public class Service {
     @NotNull
     private BigDecimal price;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "petshop_id")
+    private PetShop petshop;
+
 }

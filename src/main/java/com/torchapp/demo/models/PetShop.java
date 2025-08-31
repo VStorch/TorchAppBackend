@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "pet_shops")
@@ -37,4 +40,8 @@ public class PetShop {
     @NotBlank
     private String password;
     // Senha de modo temporário como String
+
+    // Um PetShop pode ter muitos serviços
+    @OneToMany(mappedBy = "petshop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Service> services = new ArrayList<>();
 }
