@@ -42,6 +42,9 @@ public class PetShop {
     // Senha de modo temporário como String
 
     // Um PetShop pode ter muitos serviços
-    @OneToMany(mappedBy = "petshop", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "petShop", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Service> services = new ArrayList<>();
+
+    @OneToMany(mappedBy = "petShop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EvaluateUser> evaluationsMade = new ArrayList<>();
 }

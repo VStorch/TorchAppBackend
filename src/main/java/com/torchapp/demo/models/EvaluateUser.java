@@ -27,4 +27,14 @@ public class EvaluateUser {
     @NotNull
     private LocalDate date = LocalDate.now();
 
+
+    // Muitos EvaluateUser pertencem a um User avaliado
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    // Muitos EvaluateUser pertencem a um PetShop avaliador
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "petshop_id", nullable = false)
+    private PetShop petShop;
 }

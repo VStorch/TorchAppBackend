@@ -27,6 +27,6 @@ public class Service {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "petshop_id")
-    private PetShop petshop;
+    private PetShop petShop;
 
 }
