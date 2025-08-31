@@ -33,4 +33,9 @@ public class Pet {
 
     @Past
     private LocalDate birthDate;
+
+    // Muitos podem pertencer a um usuário
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }
