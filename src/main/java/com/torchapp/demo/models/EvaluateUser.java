@@ -15,7 +15,7 @@ public class EvaluateUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Min(0)
+    @Min(1)
     @Max(5)
     @NotNull
     private Integer rating;
@@ -28,12 +28,12 @@ public class EvaluateUser {
     private LocalDate date = LocalDate.now();
 
 
-    // Muitos EvaluateUser pertencem a um User avaliado
+    // EvaluateUser pertence a um User avaliado
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // Muitos EvaluateUser pertencem a um PetShop avaliador
+    // EvaluateUser pertence a um PetShop avaliador
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "petshop_id", nullable = false)
     private PetShop petShop;
