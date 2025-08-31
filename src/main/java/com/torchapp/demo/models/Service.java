@@ -28,7 +28,7 @@ public class Service {
     private BigDecimal price;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "petshop_id")
+    @JoinColumn(name = "petshop_id", nullable = false)
     private PetShop petShop;
 
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
