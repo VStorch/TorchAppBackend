@@ -50,4 +50,7 @@ public class PetShop {
 
     @OneToMany(mappedBy = "petShop", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EvaluatePetShop> evaluations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "petShop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Appointment> appointments = new ArrayList<>();
 }
