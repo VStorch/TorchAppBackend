@@ -1,7 +1,7 @@
 package com.torchapp.demo.controllers;
 
 import com.torchapp.demo.models.User;
-import com.torchapp.demo.repositories.UserRepository;
+import com.torchapp.demo.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,67 +12,69 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     // Endpoint para criar um usuário
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        User savedUser = userRepository.save(user);
+        User savedUser = userService.registerUser(user);
         return ResponseEntity.status(201).body(savedUser); // 201 Created
     }
 
     // Endpoint para listar todos os usuários
     @GetMapping
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userService.getUsers();
     }
 
     // Endpoint para buscar um usuário pelo ID
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return userRepository.findById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        try {
+            User user = userService.getUserById(id);
+            return ResponseEntity.ok(user);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // Endpoint para atualizar um usuário
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        if (!userRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        user.setId(id);
-        User updatedUser = (User) userRepository.save(user);
-        return ResponseEntity.ok(updatedUser);
+    public User updateUser(@PathVariable Long id, @RequestBody User user) {
+        return userService.updateUser(id, user);
     }
 
     // Endpoint para deletar um usuário
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        if (!userRepository.existsById(id)) {
+        try {
+            userService.deleteUser(id);
+            return ResponseEntity.noContent().build();
+        } catch(RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
-        userRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
 
     // Endpoint para logar o usuário
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User loginRequest) {
-        return userRepository.findAll().stream()
-                .filter(u -> u.getEmail().equals(loginRequest.getEmail()) &&
-                        u.getPassword().equals(loginRequest.getPassword()))
-                .findFirst()
+        return userService.login(loginRequest.getEmail(), loginRequest.getPassword())
                 .map(ResponseEntity :: ok)
-                .orElse(ResponseEntity.status(401).build());
+                .orElse(ResponseEntity.status(401).body("Credenciais inválidas"));
     }
+    // Ajustes necessários no método login
+
+
 
     // Endpoint para verificar se email já existe
     @GetMapping("/email/{email}")
     public ResponseEntity<Void> emailExists(@PathVariable String email) {
-        return userRepository.findByEmail(email).isPresent()
+        boolean exists = userService.emailExists(email);
+        return exists
                 ? ResponseEntity.ok().build() // 200 Ok
                 : ResponseEntity.notFound().build(); // 404 Not Found
     }
