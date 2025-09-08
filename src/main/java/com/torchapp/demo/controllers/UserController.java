@@ -1,5 +1,8 @@
 package com.torchapp.demo.controllers;
 
+import com.torchapp.demo.dtos.ErrorResponse;
+import com.torchapp.demo.dtos.LoginRequest;
+import com.torchapp.demo.dtos.LoginResponse;
 import com.torchapp.demo.models.User;
 import com.torchapp.demo.services.UserService;
 import jakarta.validation.Valid;
@@ -62,10 +65,12 @@ public class UserController {
 
     // Endpoint para logar o usuário
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User loginRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         return userService.login(loginRequest.getEmail(), loginRequest.getPassword())
-                .map(ResponseEntity :: ok)
-                .orElse(ResponseEntity.status(401).body("Credenciais inválidas"));
+                .map(user -> ResponseEntity.ok(
+                        new LoginResponse(user.getId(), user.getName(), user.getSurname(), user.getEmail())
+                ))
+                .orElse(ResponseEntity.status(401).body(new ErrorResponse("Credenciais inválidas")));
     }
     // Ajustes necessários no método login
 
