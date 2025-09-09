@@ -20,9 +20,9 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User registerUser(User user) {
+    public Optional<User> registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        return Optional.of(userRepository.save(user));
     }
 
     public Optional<User> findByEmail(String email) {

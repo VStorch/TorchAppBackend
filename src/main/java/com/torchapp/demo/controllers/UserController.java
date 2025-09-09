@@ -2,7 +2,9 @@ package com.torchapp.demo.controllers;
 
 import com.torchapp.demo.dtos.ErrorResponse;
 import com.torchapp.demo.dtos.user.LoginRequest;
-import com.torchapp.demo.dtos.user.LoginResponse;
+import com.torchapp.demo.dtos.user.RegistrationRequest;
+import com.torchapp.demo.dtos.user.UserResponse;
+import com.torchapp.demo.mappers.UserMapper;
 import com.torchapp.demo.models.User;
 import com.torchapp.demo.services.UserService;
 import jakarta.validation.Valid;
@@ -23,9 +25,13 @@ public class UserController {
 
     // Endpoint para criar um usuário
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        User savedUser = userService.registerUser(user);
-        return ResponseEntity.status(201).body(savedUser); // 201 Created
+    public ResponseEntity<?> createUser(@Valid @RequestBody RegistrationRequest registrationRequest) {
+        User user = UserMapper.toEntity(registrationRequest);
+
+        return userService.registerUser(user)
+                .map(UserMapper::toResponse)
+                .map(savedUserResponse -> ResponseEntity.status(201).body(savedUserResponse))
+                .orElse(ResponseEntity.status(400).body(null));
     }
 
     // Endpoint para listar todos os usuários
@@ -67,7 +73,7 @@ public class UserController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         return userService.login(loginRequest.getEmail(), loginRequest.getPassword())
                 .<ResponseEntity<?>>map(user -> ResponseEntity.ok(
-                        new LoginResponse(user.getId(), user.getName(), user.getSurname(), user.getEmail())
+                        new UserResponse(user.getId(), user.getName(), user.getSurname(), user.getEmail())
                 ))
                 .orElse(ResponseEntity.status(401).body(new ErrorResponse("Credenciais inválidas")));
     }
