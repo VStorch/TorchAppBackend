@@ -25,18 +25,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String name;
 
-    @NotBlank
     private String surname;
 
-    @Email
-    @NotBlank
     private String email;
 
-    @Size(min = 8)
-    @NotBlank
     private String password;
 
     // Um usuário pode ter muitos pets
