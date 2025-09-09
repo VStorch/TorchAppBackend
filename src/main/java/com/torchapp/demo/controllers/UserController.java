@@ -1,8 +1,8 @@
 package com.torchapp.demo.controllers;
 
 import com.torchapp.demo.dtos.ErrorResponse;
-import com.torchapp.demo.dtos.LoginRequest;
-import com.torchapp.demo.dtos.LoginResponse;
+import com.torchapp.demo.dtos.user.LoginRequest;
+import com.torchapp.demo.dtos.user.LoginResponse;
 import com.torchapp.demo.models.User;
 import com.torchapp.demo.services.UserService;
 import jakarta.validation.Valid;

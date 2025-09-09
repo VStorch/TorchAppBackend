@@ -1,4 +1,4 @@
-package com.torchapp.demo.dtos;
+package com.torchapp.demo.dtos.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
