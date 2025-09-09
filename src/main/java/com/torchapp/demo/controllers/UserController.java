@@ -6,7 +6,6 @@ import com.torchapp.demo.dtos.LoginResponse;
 import com.torchapp.demo.models.User;
 import com.torchapp.demo.services.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,14 +66,11 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         return userService.login(loginRequest.getEmail(), loginRequest.getPassword())
-                .map(user -> ResponseEntity.ok(
+                .<ResponseEntity<?>>map(user -> ResponseEntity.ok(
                         new LoginResponse(user.getId(), user.getName(), user.getSurname(), user.getEmail())
                 ))
                 .orElse(ResponseEntity.status(401).body(new ErrorResponse("Credenciais inválidas")));
     }
-    // Ajustes necessários no método login
-
-
 
     // Endpoint para verificar se email já existe
     @GetMapping("/email/{email}")
