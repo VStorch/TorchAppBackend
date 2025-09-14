@@ -10,14 +10,16 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+@Service
 public class EmailService {
 
     private static final String TEMPLATE_NAME = "registration";
     private static final String TORCH_LOGO_IMAGE = "templates/images/torch.png";
-    private static final String PNG_MIME = "image.png";
+    private static final String PNG_MIME = "image/png";
     private static final String MAIL_SUBJECT = "Seja bem vindo ao Torch!";
 
     private final Environment environment;

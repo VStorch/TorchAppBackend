@@ -6,7 +6,9 @@ import com.torchapp.demo.dtos.user.RegistrationRequest;
 import com.torchapp.demo.dtos.user.UserResponse;
 import com.torchapp.demo.mappers.UserMapper;
 import com.torchapp.demo.models.User;
+import com.torchapp.demo.services.EmailService;
 import com.torchapp.demo.services.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,15 +20,18 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private EmailService emailService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, EmailService emailService) {
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     // Endpoint para criar um usuário
     @PostMapping
-    public ResponseEntity<?> createUser(@Valid @RequestBody RegistrationRequest registrationRequest) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody RegistrationRequest registrationRequest) throws MessagingException, UnsupportedOperationException {
         User user = UserMapper.toEntity(registrationRequest);
+        emailService.sendMailWithInline(user);
 
         return userService.registerUser(user)
                 .map(UserMapper::toResponse)

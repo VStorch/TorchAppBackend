@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http.//www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seja Bem-Vindo</title>
+</head>
+<body>
+    <section>
+        <h2>Olá <b th:text="${name}">name</b>, seja bem vindo ao Torch!</h2>
+
+        <p>Ficamos felizes que você passará a utilizar nossos serviços.</p>
+
+        <div>
+            <img src="images/torch.png" data-th-src="|cid:torchlogo|" height="80">
+        </div>
+    </section>
+</body>
+</html>
