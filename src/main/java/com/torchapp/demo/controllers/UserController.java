@@ -31,11 +31,12 @@ public class UserController {
     @PostMapping
     public ResponseEntity<?> createUser(@Valid @RequestBody RegistrationRequest registrationRequest) throws MessagingException, UnsupportedOperationException {
         User user = UserMapper.toEntity(registrationRequest);
-        emailService.sendMailWithInline(user);
 
         return userService.registerUser(user)
-                .map(UserMapper::toResponse)
-                .map(savedUserResponse -> ResponseEntity.status(201).body(savedUserResponse))
+                .map(savedUser -> {
+                    emailService.sendMailWithInline(savedUser);
+                    return ResponseEntity.status(201).body(UserMapper.toResponse(savedUser));
+                })
                 .orElse(ResponseEntity.status(400).body(null));
     }
 

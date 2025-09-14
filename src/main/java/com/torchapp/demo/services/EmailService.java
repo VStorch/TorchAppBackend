@@ -10,6 +10,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -33,33 +34,41 @@ public class EmailService {
     }
 
     @SneakyThrows
-    public void sendMailWithInline(User user) throws MessagingException, UnsupportedOperationException {
-        String confirmationUrl = "generated_confirmation_url";
-        String mailFrom = environment.getProperty("spring.mail.properties.mail.smtp.from");
-        String mailFromName = environment.getProperty("mail.from.name", "Identity");
+    @Async
+    public void sendMailWithInline(User user) {
+        try {
+            String confirmationUrl = "generated_confirmation_url";
+            String mailFrom = environment.getProperty("spring.mail.properties.mail.smtp.from");
+            String mailFromName = environment.getProperty("mail.from.name", "Identity");
 
-        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
-        final MimeMessageHelper email;
-        email = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
+            final MimeMessageHelper email;
+            email = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
-        email.setTo(user.getEmail());
-        email.setSubject(MAIL_SUBJECT);
-        email.setFrom(new InternetAddress(mailFrom, mailFromName));
+            email.setTo(user.getEmail());
+            email.setSubject(MAIL_SUBJECT);
+            email.setFrom(new InternetAddress(mailFrom, mailFromName));
 
-        final Context ctx = new Context(LocaleContextHolder.getLocale());
-        ctx.setVariable("email", user.getEmail());
-        ctx.setVariable("name", user.getName());
-        ctx.setVariable("torch", TORCH_LOGO_IMAGE);
-        ctx.setVariable("url", confirmationUrl);
+            final Context ctx = new Context(LocaleContextHolder.getLocale());
+            ctx.setVariable("email", user.getEmail());
+            ctx.setVariable("name", user.getName());
+            ctx.setVariable("torch", TORCH_LOGO_IMAGE);
+            ctx.setVariable("url", confirmationUrl);
 
-        final String htmlContent = this.htmlTemplateEngine.process(TEMPLATE_NAME, ctx);
+            final String htmlContent = this.htmlTemplateEngine.process(TEMPLATE_NAME, ctx);
 
-        email.setText(htmlContent, true);
+            email.setText(htmlContent, true);
 
-        ClassPathResource clr = new ClassPathResource(TORCH_LOGO_IMAGE);
+            ClassPathResource clr = new ClassPathResource(TORCH_LOGO_IMAGE);
 
-        email.addInline("torch", clr, PNG_MIME);
+            email.addInline("torch", clr, PNG_MIME);
 
-        mailSender.send(mimeMessage);
+            mailSender.send(mimeMessage);
+        }
+        catch (Exception e) {
+            System.err.println("Falha ao enviar email: " + e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 }
