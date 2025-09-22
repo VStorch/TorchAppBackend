@@ -69,6 +69,32 @@ public class EmailService {
             System.err.println("Falha ao enviar email: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+    @SneakyThrows
+    @Async
+    public void sendRedirectMail (User user) {
+        try {
+            String mailFrom = environment.getProperty("spring.mail.properties.mail.smtp.from");
+            String mailFromName = environment.getProperty("mail.from.name", "Identity");
 
+            final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
+            final MimeMessageHelper email = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+
+            email.setTo(user.getEmail());
+            email.setSubject("Recuperação de Senha");
+            email.setFrom(new InternetAddress(mailFrom, mailFromName));
+
+            final Context ctx = new Context(LocaleContextHolder.getLocale());
+            ctx.setVariable("email", user.getEmail());
+            ctx.setVariable("name", user.getName());
+
+            String htmlContent = this.htmlTemplateEngine.process("password-reset", ctx);
+            email.setText(htmlContent, true);
+
+            mailSender.send(mimeMessage);
+        }
+        catch (Exception e) {
+
+        }
     }
 }
