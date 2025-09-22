@@ -94,7 +94,8 @@ public class EmailService {
             mailSender.send(mimeMessage);
         }
         catch (Exception e) {
-
+            System.err.println("Falha ao enviar email "+ e.getMessage());
+            e.printStackTrace();
         }
     }
 }
