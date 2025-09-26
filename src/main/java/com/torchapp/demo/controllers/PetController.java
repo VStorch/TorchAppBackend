@@ -18,9 +18,15 @@ public class PetController {
         this.petService = petService;
     }
 
-//    public ResponseEntity<?> registerPet(@Valid @RequestBody ) {
-//    return petService.registerPet()
-//    }
+    public ResponseEntity<Pet> registerPet(@Valid @RequestBody Pet pet) {
+        try {
+            Pet savedPet = petService.registerPet(pet).orElseThrow(() ->
+                    new RuntimeException("Erro ao registrar o pet"));
+            return ResponseEntity.status(201).body(savedPet);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
     @GetMapping
     public List<Pet> getAllPets() {
@@ -39,10 +45,17 @@ public class PetController {
     }
 
     @PutMapping("/{id}")
-    public Pet updatePet(@PathVariable Long id, @RequestBody Pet pet) {
-        return petService.updatePet(id, pet);
+    public ResponseEntity<Pet> updatePet(@PathVariable Long id, @RequestBody Pet pet) {
+        try {
+            Pet updatePet = petService.updatePet(id, pet);
+            return ResponseEntity.ok(updatePet);
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePet(@PathVariable Long id) {
         try {
             petService.deletePet(id);
