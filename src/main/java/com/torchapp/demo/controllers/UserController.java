@@ -1,9 +1,7 @@
 package com.torchapp.demo.controllers;
 
 import com.torchapp.demo.dtos.ErrorResponse;
-import com.torchapp.demo.dtos.user.LoginRequest;
-import com.torchapp.demo.dtos.user.RegistrationRequest;
-import com.torchapp.demo.dtos.user.UserResponse;
+import com.torchapp.demo.dtos.user.*;
 import com.torchapp.demo.mappers.UserMapper;
 import com.torchapp.demo.models.User;
 import com.torchapp.demo.services.EmailService;
@@ -97,5 +95,27 @@ public class UserController {
         return exists
                 ? ResponseEntity.ok().build() // 200 Ok
                 : ResponseEntity.notFound().build(); // 404 Not Found
+    }
+
+    // Endpoint para solicitar reset
+    @PostMapping("/reset-password/request")
+    public ResponseEntity<?> requestPasswordReset(@Valid @RequestBody PasswordResetRequest request){
+        return userService.generatePasswordResetToken(request.getEmail())
+                .map(user -> {
+                    emailService.sendRedirectMail(user);
+                    return ResponseEntity.ok("Se o email existir, um link de redefinição foi enviado.");
+                })
+                .orElse(ResponseEntity.ok("Se o email existir, um link de redefinição foi enviado."));
+    }
+
+    // Endpoint para confirmar reset
+    public ResponseEntity<?> confirmPasswordReset(@Valid @RequestBody PasswordResetConfirmRequest request) {
+        try {
+            userService.resetPassword(request.getToken(), request.getNewPassword());
+            return ResponseEntity.ok("Senha redefinida com sucesso.");
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

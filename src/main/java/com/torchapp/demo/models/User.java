@@ -33,6 +33,8 @@ public class User {
 
     private String password;
 
+    private String resetToken;
+
     // Um usuário pode ter muitos pets
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pet> pets = new ArrayList<>();

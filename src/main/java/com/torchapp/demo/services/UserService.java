@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -64,6 +65,23 @@ public class UserService {
 
     public boolean emailExists(String email) {
         return userRepository.findByEmail(email).isPresent();
+    }
+
+    public Optional<User> generatePasswordResetToken(String email) {
+        return userRepository.findByEmail(email).map(user -> {
+            String token = UUID.randomUUID().toString();
+            user.setResetToken(token);
+            userRepository.save(user);
+            return user;
+        });
+    }
+
+    public void resetPassword(String token, String newPassword) {
+        User user = userRepository.findByResetToken(token).
+                orElseThrow(() -> new RuntimeException("Token inválido ou expirado."));
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setResetToken(null);
+        userRepository.save(user);
     }
 
 }

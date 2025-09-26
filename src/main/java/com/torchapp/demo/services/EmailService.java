@@ -88,6 +88,9 @@ public class EmailService {
             ctx.setVariable("email", user.getEmail());
             ctx.setVariable("name", user.getName());
 
+            String resetUrl = "https://vstorch.github.io/PaginaRedirecionamento?token=" + user.getResetToken();
+            ctx.setVariable("resetUrl", resetUrl);
+
             String htmlContent = this.htmlTemplateEngine.process("password-reset", ctx);
             email.setText(htmlContent, true);
 
