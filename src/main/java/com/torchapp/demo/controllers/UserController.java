@@ -59,8 +59,14 @@ public class UserController {
 
     // Endpoint para atualizar um usuário
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+        try {
+            User updateUser = userService.updateUser(id, user);
+            return ResponseEntity.ok(updateUser);
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // Endpoint para deletar um usuário
