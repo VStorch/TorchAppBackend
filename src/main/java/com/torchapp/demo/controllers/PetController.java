@@ -37,4 +37,19 @@ public class PetController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/{id}")
+    public Pet updatePet(@PathVariable Long id, @RequestBody Pet pet) {
+        return petService.updatePet(id, pet);
+    }
+
+    public ResponseEntity<Void> deletePet(@PathVariable Long id) {
+        try {
+            petService.deletePet(id);
+            return ResponseEntity.noContent().build();
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
