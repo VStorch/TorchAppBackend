@@ -1,5 +1,6 @@
 package com.torchapp.demo.services;
 
+import com.torchapp.demo.dtos.petshop.PetShopUpdateRequest;
 import com.torchapp.demo.models.PetShop;
 import com.torchapp.demo.repositories.PetShopRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,5 +31,16 @@ public class PetShopService {
 
     public PetShop getPetShopById(Long id) {
         return petShopRepository.findById(id).orElseThrow(() -> new RuntimeException("Pet Shop não encontrado"));
+    }
+
+    public PetShop updatePetShop(Long id, PetShopUpdateRequest petShopUpdateRequest) {
+        return petShopRepository.findById(id).map(petShop -> {
+            petShop.setName(petShopUpdateRequest.getName());
+            petShop.setAddress(petShopUpdateRequest.getAddress());
+            petShop.setPhone(petShopUpdateRequest.getPhone());
+            petShop.setEmail(petShopUpdateRequest.getEmail());
+            petShop.setCnpj(petShopUpdateRequest.getCnpj());
+            return petShopRepository.save(petShop);
+        }).orElseThrow(() -> new RuntimeException("Pet Shop não encontrado"));
     }
 }
