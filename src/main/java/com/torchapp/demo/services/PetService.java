@@ -1,7 +1,10 @@
 package com.torchapp.demo.services;
 
+import com.torchapp.demo.dtos.pet.PetRequest;
 import com.torchapp.demo.models.Pet;
+import com.torchapp.demo.models.User;
 import com.torchapp.demo.repositories.PetRepository;
+import com.torchapp.demo.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,13 +13,25 @@ import java.util.Optional;
 @Service
 public class PetService {
     private final PetRepository petRepository;
+    private final UserRepository userRepository;
 
-    public PetService(PetRepository petRepository) {
+    public PetService(PetRepository petRepository, UserRepository userRepository) {
         this.petRepository = petRepository;
+        this.userRepository = userRepository;
     }
 
-    public Optional<Pet> registerPet(Pet pet) {
-        return Optional.of(petRepository.save(pet));
+    public Pet registerPet(PetRequest request) {
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        Pet pet = new Pet();
+        pet.setName(request.getName());
+        pet.setSpecies(request.getSpecies());
+        pet.setBreed(request.getBreed());
+        pet.setWeight(request.getWeight());
+        pet.setBirthDate(request.getBirthDate());
+        pet.setUser(user);
+
+        return petRepository.save(pet);
     }
 
      public List<Pet> getPets() {

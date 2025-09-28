@@ -1,6 +1,8 @@
 package com.torchapp.demo.controllers;
 
+import com.torchapp.demo.dtos.pet.PetRequest;
 import com.torchapp.demo.models.Pet;
+import com.torchapp.demo.models.User;
 import com.torchapp.demo.services.PetService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +20,10 @@ public class PetController {
         this.petService = petService;
     }
 
-    public ResponseEntity<Pet> registerPet(@Valid @RequestBody Pet pet) {
-        try {
-            Pet savedPet = petService.registerPet(pet).orElseThrow(() ->
-                    new RuntimeException("Erro ao registrar o pet"));
-            return ResponseEntity.status(201).body(savedPet);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+    @PostMapping
+    public ResponseEntity<Pet> registerPet(@Valid @RequestBody PetRequest request) {
+        Pet savedPet = petService.registerPet(request);
+        return ResponseEntity.status(201).body(savedPet);
     }
 
     @GetMapping
