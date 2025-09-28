@@ -1,5 +1,6 @@
 package com.torchapp.demo.dtos.user;
 
+import com.torchapp.demo.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,4 +11,13 @@ public class UserResponse {
     private String name;
     private String surname;
     private String email;
+
+    public static UserResponse fromEntity(User user) {
+        return new UserResponse(
+                user.getId(),
+                user.getName(),
+                user.getSurname(),
+                user.getEmail()
+        );
+    }
 }

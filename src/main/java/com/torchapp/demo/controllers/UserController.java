@@ -57,10 +57,10 @@ public class UserController {
 
     // Endpoint para atualizar um usuário
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest) {
         try {
-            User updateUser = userService.updateUser(id, user);
-            return ResponseEntity.ok(updateUser);
+            User updateUser = userService.updateUser(id, userUpdateRequest);
+            return ResponseEntity.ok(UserResponse.fromEntity(updateUser));
         }
         catch (RuntimeException e) {
             return ResponseEntity.notFound().build();

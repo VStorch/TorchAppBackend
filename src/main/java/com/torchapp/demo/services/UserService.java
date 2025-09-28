@@ -1,5 +1,6 @@
 package com.torchapp.demo.services;
 
+import com.torchapp.demo.dtos.user.UserUpdateRequest;
 import com.torchapp.demo.models.User;
 import com.torchapp.demo.repositories.UserRepository;
 import org.springframework.http.ResponseEntity;
@@ -38,15 +39,11 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
-    public User updateUser(Long id, User newUserData) {
+    public User updateUser(Long id, UserUpdateRequest userUpdateRequest) {
         return userRepository.findById(id).map(user -> {
-            user.setName(newUserData.getName());
-            user.setEmail(newUserData.getEmail());
-
-            if (newUserData.getPassword() != null && !newUserData.getPassword().isBlank()) {
-                user.setPassword(passwordEncoder.encode(newUserData.getPassword()));
-            }
-
+            user.setName(userUpdateRequest.getName());
+            user.setSurname(userUpdateRequest.getSurname());
+            user.setEmail(userUpdateRequest.getEmail());
             return userRepository.save(user);
         }).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
