@@ -1,8 +1,34 @@
 package com.torchapp.demo.services;
 
+import com.torchapp.demo.models.PetShop;
+import com.torchapp.demo.repositories.PetShopRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PetShopService {
 
+    private final PetShopRepository petShopRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public PetShopService(PetShopRepository petShopRepository, PasswordEncoder passwordEncoder) {
+        this.petShopRepository = petShopRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public Optional<PetShop> registerPetShop(PetShop petShop) {
+        petShop.setPassword(passwordEncoder.encode(petShop.getPassword()));
+        return Optional.of(petShopRepository.save(petShop));
+    }
+
+    public List<PetShop> getPetShops() {
+        return petShopRepository.findAll();
+    }
+
+    public PetShop getPetShopById(Long id) {
+        return petShopRepository.findById(id).orElseThrow(() -> new RuntimeException("Pet Shop não encontrado"));
+    }
 }
