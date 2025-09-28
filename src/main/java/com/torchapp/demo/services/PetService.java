@@ -2,10 +2,12 @@ package com.torchapp.demo.services;
 
 import com.torchapp.demo.models.Pet;
 import com.torchapp.demo.repositories.PetRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class PetService {
     private final PetRepository petRepository;
 

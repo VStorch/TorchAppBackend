@@ -109,6 +109,7 @@ public class UserController {
     }
 
     // Endpoint para confirmar reset
+    @PostMapping("/reset-password/confirm")
     public ResponseEntity<?> confirmPasswordReset(@Valid @RequestBody PasswordResetConfirmRequest request) {
         try {
             userService.resetPassword(request.getToken(), request.getNewPassword());
