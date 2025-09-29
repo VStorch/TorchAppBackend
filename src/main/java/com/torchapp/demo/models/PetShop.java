@@ -39,7 +39,6 @@ public class PetShop {
     @Size(min = 8)
     @NotBlank
     private String password;
-    // Senha de modo temporário como String
 
     // Um PetShop pode ter muitos serviços
     @OneToMany(mappedBy = "petShop", cascade = CascadeType.ALL, orphanRemoval = true)

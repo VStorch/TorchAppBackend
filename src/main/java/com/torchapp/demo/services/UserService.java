@@ -27,10 +27,6 @@ public class UserService {
         return Optional.of(userRepository.save(user));
     }
 
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
     public List<User> getUsers() {
         return userRepository.findAll();
     }
@@ -62,6 +58,10 @@ public class UserService {
 
     public boolean emailExists(String email) {
         return userRepository.findByEmail(email).isPresent();
+    }
+
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     public Optional<User> generatePasswordResetToken(String email) {

@@ -43,4 +43,21 @@ public class PetShopService {
             return petShopRepository.save(petShop);
         }).orElseThrow(() -> new RuntimeException("Pet Shop não encontrado"));
     }
+
+    public void deleteUser(Long id) {
+        if (!petShopRepository.existsById(id)) {
+            throw new RuntimeException("Pet Shop não encontrado");
+        }
+        petShopRepository.deleteById(id);
+    }
+
+    public Optional<PetShop> login(String email, String rawPassword) {
+        return petShopRepository.findByEmail(email)
+                .filter(petShop -> passwordEncoder.matches(rawPassword, petShop.getPassword()));
+    }
+
+    public boolean emailExists(String email) {
+        return petShopRepository.findByEmail(email).isPresent();
+    }
+
 }
