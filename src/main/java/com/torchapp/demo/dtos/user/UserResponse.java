@@ -11,13 +11,4 @@ public class UserResponse {
     private String name;
     private String surname;
     private String email;
-
-    public static UserResponse fromEntity(User user) {
-        return new UserResponse(
-                user.getId(),
-                user.getName(),
-                user.getSurname(),
-                user.getEmail()
-        );
-    }
 }

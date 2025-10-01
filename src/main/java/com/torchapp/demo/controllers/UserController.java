@@ -60,7 +60,7 @@ public class UserController {
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest) {
         try {
             User updateUser = userService.updateUser(id, userUpdateRequest);
-            return ResponseEntity.ok(UserResponse.fromEntity(updateUser));
+            return ResponseEntity.ok(UserMapper.toResponse(updateUser));
         }
         catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
