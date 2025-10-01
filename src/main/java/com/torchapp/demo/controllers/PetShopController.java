@@ -10,10 +10,7 @@ import com.torchapp.demo.services.PetShopService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,16 +42,26 @@ public class PetShopController {
     }
 
     @GetMapping("/{id}")
-    public PetShop getPatShopById(Long id) {
+    public PetShop getPatShopById(@PathVariable Long id) {
         return petShopService.getPetShopById(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PetShopResponse> updatePetShop(Long id, PetShopUpdateRequest petShopUpdateRequest) {
+    public ResponseEntity<PetShopResponse> updatePetShop(@PathVariable Long id, @RequestBody PetShopUpdateRequest petShopUpdateRequest) {
         try {
             PetShop updatePetShop = petShopService.updatePetShop(id, petShopUpdateRequest);
             return ResponseEntity.ok(PetShopMapper.toResponse(updatePetShop));
         } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePetShop(@PathVariable Long id) {
+        try {
+            petShopService.deletePetShop(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }

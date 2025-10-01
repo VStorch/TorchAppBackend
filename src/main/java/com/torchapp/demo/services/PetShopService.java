@@ -44,7 +44,7 @@ public class PetShopService {
         }).orElseThrow(() -> new RuntimeException("Pet Shop não encontrado"));
     }
 
-    public void deleteUser(Long id) {
+    public void deletePetShop(Long id) {
         if (!petShopRepository.existsById(id)) {
             throw new RuntimeException("Pet Shop não encontrado");
         }
