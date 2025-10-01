@@ -1,8 +1,10 @@
 package com.torchapp.demo.controllers;
 
+import com.torchapp.demo.dtos.ErrorResponse;
 import com.torchapp.demo.dtos.petshop.PetShopRegistrationRequest;
 import com.torchapp.demo.dtos.petshop.PetShopResponse;
 import com.torchapp.demo.dtos.petshop.PetShopUpdateRequest;
+import com.torchapp.demo.dtos.user.LoginRequest;
 import com.torchapp.demo.mappers.PetShopMapper;
 import com.torchapp.demo.models.PetShop;
 import com.torchapp.demo.services.EmailService;
@@ -64,5 +66,22 @@ public class PetShopController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login (@Valid @RequestBody LoginRequest loginRequest) {
+        return petShopService.login(loginRequest.getEmail(), loginRequest.getPassword())
+                .<ResponseEntity<?>>map(petShop -> ResponseEntity.ok(
+                        new PetShopResponse(petShop.getId(), petShop.getName(), petShop.getAddress(), petShop.getPhone(), petShop.getEmail(), petShop.getCnpj())
+                ))
+                .orElse(ResponseEntity.status(401).body(new ErrorResponse("Credenciais inválidas")));
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Void> emailExists(@PathVariable String email) {
+        boolean exists = petShopService.emailExists(email);
+        return exists
+                ? ResponseEntity.ok().build()
+                : ResponseEntity.notFound().build();
     }
 }
