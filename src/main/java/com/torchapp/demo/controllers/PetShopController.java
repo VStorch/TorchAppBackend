@@ -4,7 +4,7 @@ import com.torchapp.demo.dtos.ErrorResponse;
 import com.torchapp.demo.dtos.petshop.PetShopRegistrationRequest;
 import com.torchapp.demo.dtos.petshop.PetShopResponse;
 import com.torchapp.demo.dtos.petshop.PetShopUpdateRequest;
-import com.torchapp.demo.dtos.user.LoginRequest;
+import com.torchapp.demo.dtos.LoginRequest;
 import com.torchapp.demo.mappers.PetShopMapper;
 import com.torchapp.demo.models.PetShop;
 import com.torchapp.demo.services.EmailService;

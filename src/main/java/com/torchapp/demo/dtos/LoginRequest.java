@@ -1,4 +1,4 @@
-package com.torchapp.demo.dtos.user;
+package com.torchapp.demo.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

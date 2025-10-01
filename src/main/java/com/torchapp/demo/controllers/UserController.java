@@ -1,6 +1,7 @@
 package com.torchapp.demo.controllers;
 
 import com.torchapp.demo.dtos.ErrorResponse;
+import com.torchapp.demo.dtos.LoginRequest;
 import com.torchapp.demo.dtos.user.*;
 import com.torchapp.demo.mappers.UserMapper;
 import com.torchapp.demo.models.User;
