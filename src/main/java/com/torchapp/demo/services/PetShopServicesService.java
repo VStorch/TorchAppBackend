@@ -37,4 +37,18 @@ public class PetShopServicesService {
     public PetShopServices getPetShopServiceById(Long id) {
         return serviceRepository.findById(id).orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
     }
+
+    public PetShopServices updateService(Long id, PetShopServices newServicesData) {
+        return serviceRepository.findById(id).map(service -> {
+            service.setName(newServicesData.getName());
+            return serviceRepository.save(service);
+        }).orElseThrow(() -> new RuntimeException("Pet não encontrado"));
+    }
+
+    public void deleteService(Long id) {
+        if (!serviceRepository.existsById(id)) {
+            throw new RuntimeException("Serviço não encontrado");
+        }
+        serviceRepository.deleteById(id);
+    }
 }
