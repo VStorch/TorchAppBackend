@@ -7,6 +7,8 @@ import com.torchapp.demo.repositories.PetShopRepository;
 import com.torchapp.demo.repositories.PetShopServicesRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PetShopServicesService {
     private final PetShopServicesRepository serviceRepository;
@@ -26,5 +28,13 @@ public class PetShopServicesService {
         services.setPetShop(petShop);
 
         return serviceRepository.save(services);
+    }
+
+    public List<PetShopServices> getPetShopServices() {
+        return serviceRepository.findAll();
+    }
+
+    public PetShopServices getPetShopServiceById(Long id) {
+        return serviceRepository.findById(id).orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
     }
 }
