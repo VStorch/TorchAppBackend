@@ -1,10 +1,6 @@
 package com.torchapp.demo.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -33,7 +29,7 @@ public class PetShop {
 
     // Um PetShop pode ter muitos serviços
     @OneToMany(mappedBy = "petShop", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Service> services = new ArrayList<>();
+    private List<PetShopServices> services = new ArrayList<>();
 
     @OneToMany(mappedBy = "petShop", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EvaluateUser> evaluationsMade = new ArrayList<>();

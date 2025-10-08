@@ -16,16 +16,4 @@ public class PetRequest {
     private Double weight;
     private LocalDate birthDate;
     private Long userId;
-
-    public static PetResponse fromEntity(Pet pet) {
-        return new PetResponse(
-                pet.getId(),
-                pet.getName(),
-                pet.getSpecies(),
-                pet.getBreed(),
-                pet.getWeight(),
-                pet.getBirthDate(),
-                pet.getUser().getId()
-        );
-    }
 }
