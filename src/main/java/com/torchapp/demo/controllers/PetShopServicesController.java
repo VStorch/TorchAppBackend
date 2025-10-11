@@ -28,22 +28,34 @@ public class PetShopServicesController {
     }
 
     @GetMapping
-    public List<PetShopServices> getAllServices() {
-        return petShopServicesService.getPetShopServices();
+    public List<PetShopServicesResponse> getAllServices() {
+        return petShopServicesService.getPetShopServices()
+                .stream()
+                .map(PetShopServicesMapper::toResponse)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PetShopServices> getServiceById(@PathVariable Long id) {
+    public ResponseEntity<PetShopServicesResponse> getServiceById(@PathVariable Long id) {
         try {
             PetShopServices service = petShopServicesService.getPetShopServiceById(id);
-            return ResponseEntity.ok(service);
+            return ResponseEntity.ok(PetShopServicesMapper.toResponse(service));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    // Implementar updateService
+    @PutMapping("/{id}")
+    public ResponseEntity<PetShopServicesResponse> updateService(@PathVariable Long id, @RequestBody PetShopServices service) {
+        try {
+            PetShopServices updateService = petShopServicesService.updateService(id, service);
+            return ResponseEntity.ok(PetShopServicesMapper.toResponse(updateService));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteService(@PathVariable Long id) {
         try {
             petShopServicesService.deleteService(id);
