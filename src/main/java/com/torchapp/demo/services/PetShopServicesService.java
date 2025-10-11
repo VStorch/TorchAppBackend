@@ -20,7 +20,7 @@ public class PetShopServicesService {
     }
 
     public PetShopServices registerService(PetShopServicesRequest request) {
-        PetShop petShop = petShopRepository.findById(request.getId())
+        PetShop petShop = petShopRepository.findById(request.getPetShopId())
                 .orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
         PetShopServices services = new PetShopServices();
         services.setName(request.getName());

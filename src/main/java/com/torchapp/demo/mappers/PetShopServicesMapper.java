@@ -15,13 +15,12 @@ public class PetShopServicesMapper {
         return petShopServices;
     }
 
-    public static PetShopServicesResponse toResponse(PetShopServicesResponse petShopServices) {
+    public static PetShopServicesResponse toResponse(PetShopServices petShopServices) {
         return new PetShopServicesResponse(
                 petShopServices.getId(),
                 petShopServices.getName(),
-                petShopServices.getPrice(),
-                //petShopServices.getAppointments(),
-                //.getPetShop()
+                petShopServices.getPrice().toString(),
+                petShopServices.getPetShop().getId()
         );
     }
 

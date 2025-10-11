@@ -9,7 +9,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class PetRequest {
-    private Long id;
     private String name;
     private String species;
     private String breed;
