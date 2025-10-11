@@ -42,12 +42,12 @@ public class UserService {
             user.setSurname(userUpdateRequest.getSurname());
             user.setEmail(userUpdateRequest.getEmail());
             return userRepository.save(user);
-        }).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        }).orElseThrow(ResourceNotFoundException::new);
     }
 
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("Usuário não encontrado");
+            throw new ResourceNotFoundException();
         }
         userRepository.deleteById(id);
     }

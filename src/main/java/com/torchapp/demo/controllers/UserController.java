@@ -55,24 +55,15 @@ public class UserController {
     // Endpoint para atualizar um usuário
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest) {
-        try {
-            User updateUser = userService.updateUser(id, userUpdateRequest);
-            return ResponseEntity.ok(UserMapper.toResponse(updateUser));
-        }
-        catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        User updateUser = userService.updateUser(id, userUpdateRequest);
+        return ResponseEntity.ok(UserMapper.toResponse(updateUser));
     }
 
     // Endpoint para deletar um usuário
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        try {
-            userService.deleteUser(id);
-            return ResponseEntity.noContent().build();
-        } catch(RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
     // Endpoint para logar o usuário
