@@ -48,12 +48,8 @@ public class UserController {
     // Endpoint para buscar um usuário pelo ID
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        try {
-            User user = userService.getUserById(id);
-            return ResponseEntity.ok(user);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
     }
 
     // Endpoint para atualizar um usuário

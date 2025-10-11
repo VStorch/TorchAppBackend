@@ -1,6 +1,6 @@
 package com.torchapp.demo.infra;
 
-import jakarta.persistence.EntityNotFoundException;
+import com.torchapp.demo.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,8 +10,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    private ResponseEntity<String> entityNotFoundHandler (EntityNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entity not found");
+    @ExceptionHandler(ResourceNotFoundException.class)
+    private ResponseEntity<RestErrorMessage> resourceNotFoundHandler (ResourceNotFoundException e) {
+        RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.NOT_FOUND, e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
     }
 }

@@ -1,6 +1,7 @@
 package com.torchapp.demo.services;
 
 import com.torchapp.demo.dtos.user.UserUpdateRequest;
+import com.torchapp.demo.exceptions.ResourceNotFoundException;
 import com.torchapp.demo.models.User;
 import com.torchapp.demo.repositories.UserRepository;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class UserService {
     }
 
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
     public User updateUser(Long id, UserUpdateRequest userUpdateRequest) {
