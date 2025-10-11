@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/services")
 public class PetShopServicesController {
@@ -26,5 +28,9 @@ public class PetShopServicesController {
     public ResponseEntity<PetShopServicesResponse> registerService(@Valid @RequestBody PetShopServicesRequest request) {
         PetShopServices savedService = petShopServicesService.registerService(request);
         return ResponseEntity.status(201).body(PetShopServicesMapper.toResponse(savedService));
+    }
+
+    public List<PetShopServices> getAllServices() {
+        return petShopServicesService.getPetShopServices();
     }
 }
