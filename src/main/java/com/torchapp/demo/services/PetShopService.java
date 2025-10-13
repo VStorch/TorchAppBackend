@@ -1,6 +1,7 @@
 package com.torchapp.demo.services;
 
 import com.torchapp.demo.dtos.petshop.PetShopUpdateRequest;
+import com.torchapp.demo.exceptions.ResourceNotFoundException;
 import com.torchapp.demo.models.PetShop;
 import com.torchapp.demo.repositories.PetShopRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,12 +42,12 @@ public class PetShopService {
             petShop.setEmail(petShopUpdateRequest.getEmail());
             petShop.setCnpj(petShopUpdateRequest.getCnpj());
             return petShopRepository.save(petShop);
-        }).orElseThrow(() -> new RuntimeException("Pet Shop não encontrado"));
+        }).orElseThrow(ResourceNotFoundException::new);
     }
 
     public void deletePetShop(Long id) {
         if (!petShopRepository.existsById(id)) {
-            throw new RuntimeException("Pet Shop não encontrado");
+            throw new ResourceNotFoundException();
         }
         petShopRepository.deleteById(id);
     }

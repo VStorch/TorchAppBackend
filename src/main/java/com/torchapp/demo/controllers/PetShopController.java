@@ -52,22 +52,14 @@ public class PetShopController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PetShopResponse> updatePetShop(@PathVariable Long id, @RequestBody PetShopUpdateRequest petShopUpdateRequest) {
-        try {
-            PetShop updatePetShop = petShopService.updatePetShop(id, petShopUpdateRequest);
-            return ResponseEntity.ok(PetShopMapper.toResponse(updatePetShop));
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+        PetShop updatePetShop = petShopService.updatePetShop(id, petShopUpdateRequest);
+        return ResponseEntity.ok(PetShopMapper.toResponse(updatePetShop));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePetShop(@PathVariable Long id) {
-        try {
-            petShopService.deletePetShop(id);
-            return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        petShopService.deletePetShop(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/login")
