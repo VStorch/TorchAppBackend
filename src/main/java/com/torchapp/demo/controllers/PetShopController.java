@@ -41,13 +41,13 @@ public class PetShopController {
     }
 
     @GetMapping
-    public List<PetShop> getAllPetShops() {
-        return petShopService.getPetShops();
+    public ResponseEntity<List<PetShopResponse>> getAllPetShops() {
+        return ResponseEntity.ok(petShopService.getPetShops());
     }
 
     @GetMapping("/{id}")
-    public PetShop getPetShopById(@PathVariable Long id) {
-        return petShopService.getPetShopById(id);
+    public PetShopResponse getPetShopById(@PathVariable Long id) {
+        return petShopService.getPetShopByIdResponse(id);
     }
 
     @PutMapping("/{id}")

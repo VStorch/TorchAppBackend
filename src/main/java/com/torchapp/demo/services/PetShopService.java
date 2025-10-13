@@ -1,7 +1,9 @@
 package com.torchapp.demo.services;
 
+import com.torchapp.demo.dtos.petshop.PetShopResponse;
 import com.torchapp.demo.dtos.petshop.PetShopUpdateRequest;
 import com.torchapp.demo.exceptions.ResourceNotFoundException;
+import com.torchapp.demo.mappers.PetShopMapper;
 import com.torchapp.demo.models.PetShop;
 import com.torchapp.demo.repositories.PetShopRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,12 +28,19 @@ public class PetShopService {
         return Optional.of(petShopRepository.save(petShop));
     }
 
-    public List<PetShop> getPetShops() {
-        return petShopRepository.findAll();
+    public List<PetShopResponse> getPetShops() {
+        return petShopRepository.findAll().stream()
+                .map(PetShopMapper::toResponse)
+                .toList();
     }
 
-    public PetShop getPetShopById(Long id) {
+    private PetShop getPetShopById(Long id) {
         return petShopRepository.findById(id).orElseThrow(RuntimeException::new);
+    }
+
+    public PetShopResponse getPetShopByIdResponse(Long id) {
+        PetShop petShop = getPetShopById(id);
+        return PetShopMapper.toResponse(petShop);
     }
 
     public PetShop updatePetShop(Long id, PetShopUpdateRequest petShopUpdateRequest) {
