@@ -1,6 +1,7 @@
 package com.torchapp.demo.services;
 
 import com.torchapp.demo.dtos.pet.PetRequest;
+import com.torchapp.demo.exceptions.ResourceNotFoundException;
 import com.torchapp.demo.models.Pet;
 import com.torchapp.demo.models.User;
 import com.torchapp.demo.repositories.PetRepository;
@@ -39,20 +40,24 @@ public class PetService {
      }
 
      public Pet getPetById(Long id) {
-        return petRepository.findById(id).orElseThrow(() -> new RuntimeException("Pet não encontrado"));
+        return petRepository.findById(id).orElseThrow((ResourceNotFoundException::new));
      }
 
      public Pet updatePet (Long id, Pet newPetData) {
         return petRepository.findById(id).map(pet -> {
             pet.setName(newPetData.getName());
+            pet.setSpecies(newPetData.getSpecies());
+            pet.setBreed(newPetData.getBreed());
+            pet.setWeight(newPetData.getWeight());
+            pet.setBirthDate(newPetData.getBirthDate());
 
             return petRepository.save(pet);
-        }).orElseThrow(() -> new RuntimeException("Pet não encontrado"));
+        }).orElseThrow(ResourceNotFoundException::new);
      }
 
      public void deletePet (Long id) {
         if (!petRepository.existsById(id)) {
-            throw new RuntimeException("Pet não encontrado");
+            throw new ResourceNotFoundException();
         }
         petRepository.deleteById(id);
      }

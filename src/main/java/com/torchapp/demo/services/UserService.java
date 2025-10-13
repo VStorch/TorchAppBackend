@@ -41,6 +41,7 @@ public class UserService {
             user.setName(userUpdateRequest.getName());
             user.setSurname(userUpdateRequest.getSurname());
             user.setEmail(userUpdateRequest.getEmail());
+
             return userRepository.save(user);
         }).orElseThrow(ResourceNotFoundException::new);
     }

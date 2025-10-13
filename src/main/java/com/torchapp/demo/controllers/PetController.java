@@ -36,34 +36,19 @@ public class PetController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PetResponse> getPetById(@PathVariable Long id) {
-        try {
-            Pet pet = petService.getPetById(id);
-            return ResponseEntity.ok(PetResponse.fromEntity(pet));
-        }
-        catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        Pet pet = petService.getPetById(id);
+        return ResponseEntity.ok(PetResponse.fromEntity(pet));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PetResponse> updatePet(@PathVariable Long id, @RequestBody Pet pet) {
-        try {
-            Pet updatePet = petService.updatePet(id, pet);
-            return ResponseEntity.ok(PetResponse.fromEntity(updatePet));
-        }
-        catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        Pet updatePet = petService.updatePet(id, pet);
+        return ResponseEntity.ok(PetResponse.fromEntity(updatePet));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePet(@PathVariable Long id) {
-        try {
-            petService.deletePet(id);
-            return ResponseEntity.noContent().build();
-        }
-        catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        petService.deletePet(id);
+        return ResponseEntity.noContent().build();
     }
 }
