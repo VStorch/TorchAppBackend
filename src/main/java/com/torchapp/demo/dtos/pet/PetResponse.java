@@ -1,27 +1,19 @@
 package com.torchapp.demo.dtos.pet;
 
-import com.torchapp.demo.models.Pet;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
-public record PetResponse(
-    Long id,
-    String name,
-    String species,
-    String breed,
-    Double weight,
-    LocalDate birthDate,
-    Long userId
-) {
-    public static PetResponse fromEntity(Pet pet) {
-        return new PetResponse(
-                pet.getId(),
-                pet.getName(),
-                pet.getSpecies(),
-                pet.getBreed(),
-                pet.getWeight(),
-                pet.getBirthDate(),
-                pet.getUser().getId()
-        );
-    }
+@Getter
+@AllArgsConstructor
+public class PetResponse {
+    private Long id;
+    private String name;
+    private String species;
+    private String breed;
+    private Double weight;
+    private LocalDate birthDate;
+    private Long userId;
 }
