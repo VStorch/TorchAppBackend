@@ -20,20 +20,14 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String name;
 
-    @NotBlank
     private String species;
 
-    @NotBlank
     private String breed;
 
-    @NotNull
-    @Positive
     private Double weight;
 
-    @Past
     private LocalDate birthDate;
 
     // Muitos pets podem pertencer a um usuário
