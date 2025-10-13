@@ -10,6 +10,6 @@ public class TorchAppApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TorchAppApplication.class, args);
-	}
+	} "a"
 
 }
