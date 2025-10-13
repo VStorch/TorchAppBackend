@@ -41,15 +41,14 @@ public class UserController {
 
     // Endpoint para listar todos os usuários
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getUsers();
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        return ResponseEntity.ok(userService.getUsers());
     }
 
     // Endpoint para buscar um usuário pelo ID
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserByIdResponse(id));
     }
 
     // Endpoint para atualizar um usuário

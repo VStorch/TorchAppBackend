@@ -1,7 +1,9 @@
 package com.torchapp.demo.services;
 
+import com.torchapp.demo.dtos.user.UserResponse;
 import com.torchapp.demo.dtos.user.UserUpdateRequest;
 import com.torchapp.demo.exceptions.ResourceNotFoundException;
+import com.torchapp.demo.mappers.UserMapper;
 import com.torchapp.demo.models.User;
 import com.torchapp.demo.repositories.UserRepository;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +30,19 @@ public class UserService {
         return Optional.of(userRepository.save(user));
     }
 
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> getUsers() {
+        return userRepository.findAll().stream()
+                .map(UserMapper::toResponse)
+                .toList();
     }
 
-    public User getUserById(Long id) {
+    private User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+    }
+
+    public UserResponse getUserByIdResponse(Long id) {
+        User user = getUserById(id);
+        return UserMapper.toResponse(user);
     }
 
     public User updateUser(Long id, UserUpdateRequest userUpdateRequest) {
