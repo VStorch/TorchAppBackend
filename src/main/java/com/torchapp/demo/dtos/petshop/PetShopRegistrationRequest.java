@@ -17,7 +17,7 @@ public class PetShopRegistrationRequest {
     @NotBlank
     private String address;
 
-    @Pattern(regexp = "^\\+?\\d{10,15}$", message = "Telefone inválido")
+    @Pattern(regexp = "^\\(\\d{2}\\) \\d \\d{4}-\\d{4}$")
     @NotBlank
     private String phone;
 
