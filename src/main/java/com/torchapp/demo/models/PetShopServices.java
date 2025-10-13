@@ -19,12 +19,9 @@ public class PetShopServices {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String name;
 
     @Column(precision = 10, scale = 2)
-    @DecimalMin(value = "0.00", inclusive = false)
-    @NotNull
     private BigDecimal price;
 
     @ManyToOne(fetch = FetchType.LAZY)
