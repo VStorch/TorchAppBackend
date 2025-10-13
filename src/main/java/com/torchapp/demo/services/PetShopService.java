@@ -30,7 +30,7 @@ public class PetShopService {
     }
 
     public PetShop getPetShopById(Long id) {
-        return petShopRepository.findById(id).orElseThrow(() -> new RuntimeException("Pet Shop não encontrado"));
+        return petShopRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
     public PetShop updatePetShop(Long id, PetShopUpdateRequest petShopUpdateRequest) {

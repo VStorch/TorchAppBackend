@@ -46,7 +46,7 @@ public class PetShopController {
     }
 
     @GetMapping("/{id}")
-    public PetShop getPatShopById(@PathVariable Long id) {
+    public PetShop getPetShopById(@PathVariable Long id) {
         return petShopService.getPetShopById(id);
     }
 
