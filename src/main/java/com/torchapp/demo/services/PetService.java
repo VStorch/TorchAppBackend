@@ -23,7 +23,7 @@ public class PetService {
 
     public Pet registerPet(PetRequest request) {
         User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(ResourceNotFoundException::new);
         Pet pet = new Pet();
         pet.setName(request.getName());
         pet.setSpecies(request.getSpecies());
