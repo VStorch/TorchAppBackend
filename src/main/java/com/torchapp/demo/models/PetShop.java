@@ -39,4 +39,7 @@ public class PetShop {
 
     @OneToMany(mappedBy = "petShop", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Appointment> appointments = new ArrayList<>();
+
+    @Column(nullable = false)
+    private boolean emailVerified = false;
 }
