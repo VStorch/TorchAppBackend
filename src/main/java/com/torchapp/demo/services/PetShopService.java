@@ -70,4 +70,7 @@ public class PetShopService {
         return petShopRepository.findByEmail(email).isPresent();
     }
 
+    public Optional<PetShop> findByEmail(String email) {
+        return petShopRepository.findByEmail(email);
+    }
 }
