@@ -18,10 +18,8 @@ import org.thymeleaf.context.Context;
 @Service
 public class EmailService {
 
-    private static final String TEMPLATE_NAME = "registration";
     private static final String TORCH_LOGO_IMAGE = "templates/images/torch.png";
     private static final String PNG_MIME = "image/png";
-    private static final String MAIL_SUBJECT = "Seja bem vindo ao Torch!";
 
     private final Environment environment;
     private final JavaMailSender mailSender;
@@ -46,7 +44,7 @@ public class EmailService {
             email = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
             email.setTo(user.getEmail());
-            email.setSubject(MAIL_SUBJECT);
+            email.setSubject("Seja bem vindo ao Torch!");
             email.setFrom(new InternetAddress(mailFrom, mailFromName));
 
             final Context ctx = new Context(LocaleContextHolder.getLocale());
@@ -55,7 +53,7 @@ public class EmailService {
             ctx.setVariable("torch", TORCH_LOGO_IMAGE);
             ctx.setVariable("url", confirmationUrl);
 
-            final String htmlContent = this.htmlTemplateEngine.process(TEMPLATE_NAME, ctx);
+            final String htmlContent = this.htmlTemplateEngine.process("registration", ctx);
 
             email.setText(htmlContent, true);
 
