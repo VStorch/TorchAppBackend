@@ -47,4 +47,12 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Appointment> appointments = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorite_petshops",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "petshop_id")
+    )
+    private List<PetShop> favoritePetShops = new ArrayList<>();
 }
