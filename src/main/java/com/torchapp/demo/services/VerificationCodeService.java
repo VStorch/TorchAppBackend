@@ -27,24 +27,24 @@ public class VerificationCodeService {
     private final Random random = new Random();
 
     @Transactional
-    public void sendVerificationCode(PetShop petShop) {
+    public void sendVerificationCode(String email) {
         String code = String.valueOf(random.nextInt(90_000) + 10_000);
 
-        VerificationCode verification = verificationCodeRepository.findByPetShop(petShop).orElse(new VerificationCode());
+        VerificationCode verification = verificationCodeRepository.findByEmail(email).orElse(new VerificationCode());
 
-        verification.setPetShop(petShop);
+        verification.setEmail(email);
         verification.setCode(code);
         verification.setExpiresAt(LocalDateTime.now().plusMinutes(EXPIRATION_MINUTES));
         verification.setAttempts(0);
         verification.setVerified(false);
 
         verificationCodeRepository.save(verification);
-        emailService.sendVerificationCodeMailForPetShop(petShop, code);
+        emailService.sendVerificationCodeMail(email, code);
     }
 
     @Transactional
-    public boolean verifyCode(PetShop petShop, String code) {
-        VerificationCode verification = verificationCodeRepository.findByPetShop(petShop)
+    public boolean verifyCode(String email, String code) {
+        VerificationCode verification = verificationCodeRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Nunhum código gerado para este PetShop."));
         if (verification.isExpired()) {
             throw new RuntimeException("O código expirou. Solicite um novo.");
@@ -57,7 +57,6 @@ public class VerificationCodeService {
 
         if (verification.getCode().equals(code)) {
             verification.setVerified(true);
-            verification.getPetShop().setEmailVerified(true);
             verificationCodeRepository.save(verification);
             return true;
         } else {

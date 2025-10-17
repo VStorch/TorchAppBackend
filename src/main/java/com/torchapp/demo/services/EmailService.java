@@ -1,8 +1,6 @@
 package com.torchapp.demo.services;
 
-import com.torchapp.demo.models.PetShop;
 import com.torchapp.demo.models.User;
-import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.SneakyThrows;
@@ -104,24 +102,24 @@ public class EmailService {
 
     @SneakyThrows
     @Async
-    public void sendVerificationCodeMailForPetShop(PetShop petShop, String code) {
+    public void sendVerificationCodeMail(String email, String code) {
         try {
             String mailFrom = environment.getProperty("spring.mail.properties.mail.smtp.from");
             String mailFromName = environment.getProperty("mail.from.name", "Identity");
 
             final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
-            final MimeMessageHelper email = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
-            email.setTo(petShop.getEmail());
-            email.setSubject("Código de Verificação - Torch");
-            email.setFrom(new InternetAddress(mailFrom, mailFromName));
+            message.setTo(email);
+            message.setSubject("Código de Verificação - Torch");
+            message.setFrom(new InternetAddress(mailFrom, mailFromName));
 
             final Context ctx = new Context(LocaleContextHolder.getLocale());
-            ctx.setVariable("name", petShop.getName());
+            ctx.setVariable("email", email);
             ctx.setVariable("code", code);
 
             String htmlContent = this.htmlTemplateEngine.process("verification-code", ctx);
-            email.setText(htmlContent, true);
+            message.setText(htmlContent, true);
 
             mailSender.send(mimeMessage);
         } catch (Exception e) {

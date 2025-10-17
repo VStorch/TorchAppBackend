@@ -29,18 +29,13 @@ public class VerificationController {
 
     @PostMapping("/send")
     public ResponseEntity<?> sendVerificationCode(@RequestBody @Valid sendVerificationCodeRequest request) {
-        PetShop petShop = petShopService.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException());
-        verificationCodeService.sendVerificationCode(petShop);
-
+        verificationCodeService.sendVerificationCode(request.getEmail());
         return ResponseEntity.ok(Map.of("message", "Código de verificação enviado com sucesso."));
     }
 
     @PostMapping("/check")
     public ResponseEntity<?> verifyCode(@RequestBody @Valid checkVerificationCodeRequest request) {
-        PetShop petShop = petShopService.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException());
-        boolean success = verificationCodeService.verifyCode(petShop, request.getCode());
+        boolean success = verificationCodeService.verifyCode(request.getEmail(), request.getCode());
 
         if (success) {
             return ResponseEntity.ok(Map.of("message", "Email verificado com sucesso"));

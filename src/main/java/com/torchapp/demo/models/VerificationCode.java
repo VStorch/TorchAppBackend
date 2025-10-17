@@ -18,6 +18,9 @@ public class VerificationCode {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String email;
+
     private String code;
 
     private LocalDateTime expiresAt;
@@ -25,10 +28,6 @@ public class VerificationCode {
     private int attempts;
 
     private boolean verified;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "petshop_id")
-    private PetShop petShop;
 
     public boolean isExpired() {
         return LocalDateTime.now().isAfter(expiresAt);
