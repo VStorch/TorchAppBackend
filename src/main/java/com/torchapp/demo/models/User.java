@@ -1,5 +1,6 @@
 package com.torchapp.demo.models;
 
+import com.torchapp.demo.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -34,6 +35,9 @@ public class User {
     private String password;
 
     private String resetToken;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     // Um usuário pode ter muitos pets
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

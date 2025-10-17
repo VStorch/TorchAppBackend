@@ -27,6 +27,10 @@ public class PetShop {
 
     private String password;
 
+    @OneToOne
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private User owner;
+
     // Um PetShop pode ter muitos serviços
     @OneToMany(mappedBy = "petShop", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PetShopServices> services = new ArrayList<>();
