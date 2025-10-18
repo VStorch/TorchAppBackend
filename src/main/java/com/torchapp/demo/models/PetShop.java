@@ -31,6 +31,9 @@ public class PetShop {
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User owner;
 
+    @Column(nullable = false)
+    private boolean approved = false;
+
     // Um PetShop pode ter muitos serviços
     @OneToMany(mappedBy = "petShop", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PetShopServices> services = new ArrayList<>();
@@ -43,7 +46,4 @@ public class PetShop {
 
     @OneToMany(mappedBy = "petShop", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Appointment> appointments = new ArrayList<>();
-
-    @Column(nullable = false)
-    private boolean emailVerified = false;
 }

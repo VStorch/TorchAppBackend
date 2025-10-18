@@ -24,7 +24,6 @@ public class PetShopService {
     }
 
     public Optional<PetShop> registerPetShop(PetShop petShop) {
-        petShop.setPassword(passwordEncoder.encode(petShop.getPassword()));
         return Optional.of(petShopRepository.save(petShop));
     }
 

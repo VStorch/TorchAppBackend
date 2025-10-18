@@ -59,4 +59,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "petshop_id")
     )
     private List<PetShop> favoritePetShops = new ArrayList<>();
+
+    @Column(nullable = false)
+    private boolean emailVerifiedForPetShopOwner = false;
 }

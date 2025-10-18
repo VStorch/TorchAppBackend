@@ -1,5 +1,6 @@
 package com.torchapp.demo.dtos.petshop;
 
+import com.torchapp.demo.models.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -28,7 +29,6 @@ public class PetShopRegistrationRequest {
     @NotBlank
     private String cnpj;
 
-    @Size(min = 8)
     @NotBlank
-    private String password;
+    private User owner;
 }
