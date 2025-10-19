@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RegistrationRequest {
+public class UserRegistrationRequest {
 
     @NotBlank(message = "Nome é um campo obrigatório")
     private String name;

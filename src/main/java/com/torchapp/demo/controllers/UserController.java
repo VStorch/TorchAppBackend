@@ -28,8 +28,8 @@ public class UserController {
 
     // Endpoint para criar um usuário
     @PostMapping
-    public ResponseEntity<?> createUser(@Valid @RequestBody RegistrationRequest registrationRequest) throws MessagingException, UnsupportedOperationException {
-        User user = UserMapper.toEntity(registrationRequest);
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserRegistrationRequest userRegistrationRequest) throws MessagingException, UnsupportedOperationException {
+        User user = UserMapper.toEntity(userRegistrationRequest);
 
         return userService.registerUser(user)
                 .map(savedUser -> {

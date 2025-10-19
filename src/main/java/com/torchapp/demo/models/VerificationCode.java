@@ -21,15 +21,17 @@ public class VerificationCode {
     @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String code;
 
-    private LocalDateTime expiresAt;
+    @Column(nullable = false)
+    private LocalDateTime expirationTime;
 
     private int attempts;
 
     private boolean verified;
 
     public boolean isExpired() {
-        return LocalDateTime.now().isAfter(expiresAt);
+        return LocalDateTime.now().isAfter(expirationTime);
     }
 }

@@ -34,7 +34,7 @@ public class VerificationCodeService {
 
         verification.setEmail(email);
         verification.setCode(code);
-        verification.setExpiresAt(LocalDateTime.now().plusMinutes(EXPIRATION_MINUTES));
+        verification.setExpirationTime(LocalDateTime.now().plusMinutes(EXPIRATION_MINUTES));
         verification.setAttempts(0);
         verification.setVerified(false);
 

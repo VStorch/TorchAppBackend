@@ -1,12 +1,12 @@
 package com.torchapp.demo.mappers;
 
-import com.torchapp.demo.dtos.user.RegistrationRequest;
+import com.torchapp.demo.dtos.user.UserRegistrationRequest;
 import com.torchapp.demo.dtos.user.UserResponse;
 import com.torchapp.demo.models.User;
 
 public class UserMapper {
 
-    public static User toEntity(RegistrationRequest request) {
+    public static User toEntity(UserRegistrationRequest request) {
         User user = new User();
         user.setName(request.getName());
         user.setSurname(request.getSurname());
