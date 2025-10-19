@@ -27,6 +27,10 @@ public class UserService {
     }
 
     public Optional<User> registerUser(User user) {
+        if (emailExists(user.getEmail())) {
+            throw new IllegalArgumentException("Email já cadastrado.");
+        }
+        user.setRole(Role.CLIENT);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return Optional.of(userRepository.save(user));
     }
