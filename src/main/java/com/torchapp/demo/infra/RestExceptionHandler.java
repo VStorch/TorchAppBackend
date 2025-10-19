@@ -44,4 +44,14 @@ public class RestExceptionHandler {
         );
         return ResponseEntity.badRequest().body(errorMessage);
     }
+
+    @ExceptionHandler(Exception.class)
+    private ResponseEntity<RestErrorMessage> globalExceptionHandler(Exception e, HttpServletRequest request) {
+        RestErrorMessage errorMessage = new RestErrorMessage(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Erro interno no servidor: "+ e.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+    }
 }
