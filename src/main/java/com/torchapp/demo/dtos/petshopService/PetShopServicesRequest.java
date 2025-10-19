@@ -12,13 +12,13 @@ import java.math.BigDecimal;
 @Setter
 public class PetShopServicesRequest {
 
-    @NotBlank
+    @NotBlank(message = "Nome é um campo obrigatório")
     private String name;
 
-    @DecimalMin(value = "0.00", inclusive = false)
-    @NotNull
+    @NotNull(message = "Preço é um campo obrigatório")
+    @DecimalMin(value = "0.00", inclusive = false, message = "O preço deve ser maior que zero")
     private BigDecimal price;
 
-    @NotNull
+    @NotNull(message = "Id do PetShop é um campo obrigatorio")
     private Long petShopId;
 }

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PasswordResetRequest {
-    @NotBlank
-    @Email
+    @NotBlank(message = "Email é um campo obrigatório")
+    @Email(message = "Email inválido")
     private String email;
 }

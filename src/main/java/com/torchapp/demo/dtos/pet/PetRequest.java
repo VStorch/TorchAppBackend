@@ -14,22 +14,22 @@ import java.time.LocalDate;
 @Setter
 public class PetRequest {
 
-    @NotBlank
+    @NotBlank(message = "Nome é um campo obrigatório")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "Espécie é um campo obrigatório")
     private String species;
 
-    @NotBlank
+    @NotBlank(message = "Raça é um campo obrigatório")
     private String breed;
 
-    @Positive
-    @NotNull
+    @NotNull(message = "Peso é um campo obrigatório")
+    @Positive(message = "Não existe peso negativo")
     private Double weight;
 
-    @Past
+    @Past(message = "A data de nascimento deve estar no passado")
     private LocalDate birthDate;
 
-    @NotNull
+    @NotNull(message = "Id do Usuário é um campo obrigatório")
     private Long userId;
 }

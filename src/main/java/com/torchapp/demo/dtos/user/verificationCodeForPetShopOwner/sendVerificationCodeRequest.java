@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class sendVerificationCodeRequest {
-    @Email
-    @NotBlank
+    @Email(message = "Email inválido")
+    @NotBlank(message = "Email é um campo obrigatório")
     private String email;
 }

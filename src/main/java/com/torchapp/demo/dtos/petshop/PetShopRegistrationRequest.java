@@ -26,9 +26,9 @@ public class PetShopRegistrationRequest {
     @NotBlank
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "CNPJ é um campo obrigatório")
     private String cnpj;
 
-    @NotBlank
+    @NotBlank(message = "Dono é um campo obrigatório")
     private User owner;
 }

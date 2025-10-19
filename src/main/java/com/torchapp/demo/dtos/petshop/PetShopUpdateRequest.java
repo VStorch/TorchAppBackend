@@ -11,20 +11,20 @@ import lombok.Setter;
 @Setter
 public class PetShopUpdateRequest {
 
-    @NotBlank
+    @NotBlank(message = "Nome é um campo obrigatório")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "Endereço é um campo obrigatório")
     private String address;
 
-    @Pattern(regexp = "^\\(\\d{2}\\) \\d \\d{4}-\\d{4}$")
-    @NotBlank
+    @NotBlank(message = "Telefone é um campo obrigatório")
+    @Pattern(regexp = "^\\(\\d{2}\\) \\d \\d{4}-\\d{4}$", message = "O telefone deve seguir o padrão: (XX) X XXXX-XXXX")
     private String phone;
 
-    @Email
-    @NotBlank
+    @NotBlank(message = "Email é um campo obrigatório")
+    @Email(message = "Email inválido")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "CNPJ é um campo obrigatório")
     private String cnpj;
 }

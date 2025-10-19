@@ -16,12 +16,12 @@ public class UserRegistrationRequest {
     @NotBlank(message = "Sobrenome é um campo obrigatório")
     private String surname;
 
-    @Email(message = "Email inválido")
     @NotBlank(message = "Email é um campo obrigatório")
+    @Email(message = "Email inválido")
     private String email;
 
-    @Size(min = 8, message = "A senha deve ter no mínimo 8 caracteres")
     @NotBlank(message = "Senha é um campo obrigatório")
+    @Size(min = 8, message = "A senha deve ter no mínimo 8 caracteres")
     private String password;
 
 }

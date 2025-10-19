@@ -10,11 +10,11 @@ import lombok.Setter;
 @Setter
 public class checkVerificationCodeRequest {
 
-    @Email
-    @NotBlank
+    @NotBlank(message = "Email é um campo obrigatório")
+    @Email(message = "Email inválido")
     private String email;
 
-    @Pattern(regexp = "\\d{5}")
-    @NotBlank
+    @NotBlank(message = "Código é um campo obrigatório")
+    @Pattern(regexp = "\\d{5}", message = "O código deve conter 5 números")
     private String code;
 }
