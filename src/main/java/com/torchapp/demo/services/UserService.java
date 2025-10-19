@@ -2,6 +2,7 @@ package com.torchapp.demo.services;
 
 import com.torchapp.demo.dtos.user.UserResponse;
 import com.torchapp.demo.dtos.user.UserUpdateRequest;
+import com.torchapp.demo.enums.Role;
 import com.torchapp.demo.exceptions.ResourceNotFoundException;
 import com.torchapp.demo.mappers.UserMapper;
 import com.torchapp.demo.models.User;
@@ -27,6 +28,19 @@ public class UserService {
 
     public Optional<User> registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return Optional.of(userRepository.save(user));
+    }
+
+    public Optional<User> registerPetShopOwner(User user, VerificationCodeService verificationCodeService) {
+        if (emailExists(user.getEmail())) {
+            throw new IllegalArgumentException("Email já cadastrado.");
+        }
+        if (!verificationCodeService.isEmailVerified(user.getEmail())) {
+            throw new IllegalStateException("Email não verificado.");
+        }
+        user.setRole(Role.PETSHOP_OWNER);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         return Optional.of(userRepository.save(user));
     }
 

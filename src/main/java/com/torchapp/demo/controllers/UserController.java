@@ -7,12 +7,14 @@ import com.torchapp.demo.mappers.UserMapper;
 import com.torchapp.demo.models.User;
 import com.torchapp.demo.services.EmailService;
 import com.torchapp.demo.services.UserService;
+import com.torchapp.demo.services.VerificationCodeService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -20,10 +22,12 @@ public class UserController {
 
     private final UserService userService;
     private EmailService emailService;
+    private VerificationCodeService verificationCodeService;
 
-    public UserController(UserService userService, EmailService emailService) {
+    public UserController(UserService userService, EmailService emailService, VerificationCodeService verificationCodeService) {
         this.userService = userService;
         this.emailService = emailService;
+        this.verificationCodeService = verificationCodeService;
     }
 
     // Endpoint para criar um usuário
@@ -37,6 +41,21 @@ public class UserController {
                     return ResponseEntity.status(201).body(UserMapper.toResponse(savedUser));
                 })
                 .orElse(ResponseEntity.status(400).body(null));
+    }
+
+    @PostMapping("/petshop-owner")
+    public ResponseEntity<?> registerOwner(@RequestBody UserRegistrationRequest request) {
+        try {
+            User user = UserMapper.toEntity(request);
+            Optional<User> saved = userService.registerPetShopOwner(user, verificationCodeService);
+
+            return ResponseEntity.status(201).body("Dono de PetShop cadastrado com sucesso.");
+
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao cadastrar dono de PetShop.");
+        }
     }
 
     // Endpoint para listar todos os usuários

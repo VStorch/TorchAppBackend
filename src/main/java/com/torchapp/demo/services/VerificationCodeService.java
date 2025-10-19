@@ -71,4 +71,10 @@ public class VerificationCodeService {
                 .filter(VerificationCode::isExpired)
                 .forEach(verificationCodeRepository::delete);
     }
+
+    public boolean isEmailVerified(String email) {
+        return verificationCodeRepository.findByEmail(email)
+                .map(VerificationCode::isVerified)
+                .orElse(false);
+    }
 }
