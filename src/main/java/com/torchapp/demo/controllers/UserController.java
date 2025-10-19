@@ -45,17 +45,9 @@ public class UserController {
 
     @PostMapping("/petshop-owner")
     public ResponseEntity<?> registerOwner(@RequestBody UserRegistrationRequest request) {
-        try {
-            User user = UserMapper.toEntity(request);
-            Optional<User> saved = userService.registerPetShopOwner(user, verificationCodeService);
-
-            return ResponseEntity.status(201).body("Dono de PetShop cadastrado com sucesso.");
-
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro ao cadastrar dono de PetShop.");
-        }
+        User user = UserMapper.toEntity(request);
+        Optional<User> saved = userService.registerPetShopOwner(user, verificationCodeService);
+        return ResponseEntity.status(201).body("Dono de PetShop cadastrado com sucesso.");
     }
 
     // Endpoint para listar todos os usuários
