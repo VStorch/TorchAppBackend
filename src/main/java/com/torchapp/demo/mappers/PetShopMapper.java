@@ -13,7 +13,6 @@ public class PetShopMapper {
         petShop.setPhone(request.getPhone());
         petShop.setEmail(request.getEmail());
         petShop.setCnpj(request.getCnpj());
-        petShop.setPassword(request.getPassword());
         return petShop;
     }
 
