@@ -65,9 +65,8 @@ public class PetShopController {
     @PostMapping("/login")
     public ResponseEntity<?> login (@Valid @RequestBody LoginRequest loginRequest) {
         return petShopService.login(loginRequest.getEmail(), loginRequest.getPassword())
-                .<ResponseEntity<?>>map(petShop -> ResponseEntity.ok(
-                        new PetShopResponse(petShop.getId(), petShop.getName(), petShop.getAddress(), petShop.getPhone(), petShop.getEmail(), petShop.getCnpj())
-                ))
+                .<ResponseEntity<?>>map(petShop -> ResponseEntity.ok(PetShopMapper.toResponse(petShop))
+                )
                 .orElse(ResponseEntity.status(401).body(new ErrorResponse("Credenciais inválidas")));
     }
 

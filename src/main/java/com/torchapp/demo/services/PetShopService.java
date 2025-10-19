@@ -45,7 +45,13 @@ public class PetShopService {
     public PetShop updatePetShop(Long id, PetShopUpdateRequest petShopUpdateRequest) {
         return petShopRepository.findById(id).map(petShop -> {
             petShop.setName(petShopUpdateRequest.getName());
-            petShop.setAddress(petShopUpdateRequest.getAddress());
+            petShop.setCep(petShopUpdateRequest.getCep());
+            petShop.setState(petShopUpdateRequest.getState());
+            petShop.setCity(petShopUpdateRequest.getCity());
+            petShop.setNeighborhood(petShopUpdateRequest.getNeighborhood());
+            petShop.setStreet(petShopUpdateRequest.getStreet());
+            petShop.setNumber(petShopUpdateRequest.getNumber());
+            petShop.setAddressComplement(petShopUpdateRequest.getAddressComplement());
             petShop.setPhone(petShopUpdateRequest.getPhone());
             petShop.setEmail(petShopUpdateRequest.getEmail());
             petShop.setCnpj(petShopUpdateRequest.getCnpj());

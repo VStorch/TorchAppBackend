@@ -15,8 +15,8 @@ public class PetShopRegistrationRequest {
     @NotBlank
     private String name;
 
-    @NotBlank
-    private String address;
+    // @NotBlank
+    // private String address;
 
     @Pattern(regexp = "^\\(\\d{2}\\) \\d \\d{4}-\\d{4}$")
     @NotBlank
