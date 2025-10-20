@@ -38,7 +38,6 @@ public class PetShopService {
 
         PetShop petShop = PetShopMapper.toEntity(request);
         petShop.setOwner(owner);
-        petShop.setEmail(owner.getEmail());
         petShop.setApproved(false); // Aguarda aprovação do admin
 
         PetShop saved = petShopRepository.save(petShop);
