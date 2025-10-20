@@ -9,14 +9,14 @@ import com.torchapp.demo.models.PetShop;
 import com.torchapp.demo.models.User;
 import com.torchapp.demo.repositories.PetShopRepository;
 import com.torchapp.demo.repositories.UserRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 public class PetShopService {
 
     private final PetShopRepository petShopRepository;
@@ -60,6 +60,7 @@ public class PetShopService {
         return PetShopMapper.toResponse(petShop);
     }
 
+    @Transactional
     public PetShop updatePetShop(Long id, PetShopUpdateRequest petShopUpdateRequest) {
         return petShopRepository.findById(id).map(petShop -> {
             petShop.setName(petShopUpdateRequest.getName());
@@ -77,6 +78,7 @@ public class PetShopService {
         }).orElseThrow(ResourceNotFoundException::new);
     }
 
+    @Transactional
     public void deletePetShop(Long id) {
         if (!petShopRepository.existsById(id)) {
             throw new ResourceNotFoundException();
