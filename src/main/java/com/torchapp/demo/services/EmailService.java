@@ -25,25 +25,27 @@ public class EmailService {
     private final TemplateEngine htmlTemplateEngine;
 
     public EmailService(Environment environment, JavaMailSender mailSender, TemplateEngine htmlTemplateEngine) {
-    this.environment = environment;
-    this.mailSender = mailSender;
-    this.htmlTemplateEngine = htmlTemplateEngine;
+        this.environment = environment;
+        this.mailSender = mailSender;
+        this.htmlTemplateEngine = htmlTemplateEngine;
     }
 
+    // ======================
+    // EMAIL DE BOAS-VINDAS
+    // ======================
     @SneakyThrows
     @Async
     public void sendMailWithInline(User user) {
         try {
             String confirmationUrl = "generated_confirmation_url";
             String mailFrom = environment.getProperty("spring.mail.properties.mail.smtp.from");
-            String mailFromName = environment.getProperty("mail.from.name", "Identity");
+            String mailFromName = "TORCH 🔥";
 
             final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
-            final MimeMessageHelper email;
-            email = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            final MimeMessageHelper email = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
             email.setTo(user.getEmail());
-            email.setSubject("Seja bem vindo ao Torch!");
+            email.setSubject("Seja bem-vindo ao Torch!");
             email.setFrom(new InternetAddress(mailFrom, mailFromName));
 
             final Context ctx = new Context(LocaleContextHolder.getLocale());
@@ -53,33 +55,33 @@ public class EmailService {
             ctx.setVariable("url", confirmationUrl);
 
             final String htmlContent = this.htmlTemplateEngine.process("registration", ctx);
-
             email.setText(htmlContent, true);
 
             ClassPathResource clr = new ClassPathResource(TORCH_LOGO_IMAGE);
-
             email.addInline("torch", clr, PNG_MIME);
 
             mailSender.send(mimeMessage);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.err.println("Falha ao enviar email: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
+    // ======================
+    // EMAIL DE RECUPERAÇÃO DE SENHA
+    // ======================
     @SneakyThrows
     @Async
-    public void sendRedirectMail (User user) {
+    public void sendRedirectMail(User user) {
         try {
             String mailFrom = environment.getProperty("spring.mail.properties.mail.smtp.from");
-            String mailFromName = environment.getProperty("mail.from.name", "Identity");
+            String mailFromName = "TORCH 🔥";
 
             final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
             final MimeMessageHelper email = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
             email.setTo(user.getEmail());
-            email.setSubject("Recuperação de Senha");
+            email.setSubject("Recuperação de Senha - Torch");
             email.setFrom(new InternetAddress(mailFrom, mailFromName));
 
             final Context ctx = new Context(LocaleContextHolder.getLocale());
@@ -93,19 +95,21 @@ public class EmailService {
             email.setText(htmlContent, true);
 
             mailSender.send(mimeMessage);
-        }
-        catch (Exception e) {
-            System.err.println("Falha ao enviar email "+ e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Falha ao enviar email: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
+    // ======================
+    // EMAIL DE CÓDIGO DE VERIFICAÇÃO
+    // ======================
     @SneakyThrows
     @Async
     public void sendVerificationCodeMail(String email, String code) {
         try {
             String mailFrom = environment.getProperty("spring.mail.properties.mail.smtp.from");
-            String mailFromName = environment.getProperty("mail.from.name", "Identity");
+            String mailFromName = "TORCH 🔥";
 
             final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
             final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
