@@ -17,8 +17,7 @@ public class PetShop {
 
     private String name;
 
-    //private String address;
-
+    // Address;
     private String cep;
     private String state;
     private String city;
@@ -32,8 +31,6 @@ public class PetShop {
     private String email;
 
     private String cnpj;
-
-    private String password;
 
     @OneToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
