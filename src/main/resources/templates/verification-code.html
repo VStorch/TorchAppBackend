@@ -5,27 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Torch | Código de Verificação</title>
 
-    <!-- Desativa modo escuro -->
+    <!-- Força modo claro -->
     <meta name="color-scheme" content="light only">
     <meta name="supported-color-schemes" content="light">
 </head>
 
-<body style="margin:0; padding:0; font-family:'Segoe UI', Arial, sans-serif; background-color:#f4f4f4; color:#333;">
+<body style="
+  margin:0;
+  padding:0;
+  font-family:'Segoe UI', Arial, sans-serif;
+  background-color:#fff8dc;
+  background-image:url('https://dummyimage.com/100x100/fff8dc/fff8dc.png');
+  background-repeat:repeat;
+  background-size:100px 100px;
+  color:#333333 !important;
+">
 
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="padding:50px 0;">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0"
+       style="padding:50px 0;
+                background-color:#fff8dc;
+                background-image:url('https://dummyimage.com/100x100/fff8dc/fff8dc.png');
+                background-repeat:repeat;
+                background-size:100px 100px;
+                color:#333333 !important;">
     <tr>
         <td align="center">
+
             <!-- Cartão principal -->
             <table width="100%" cellpadding="0" cellspacing="0"
-                   style="max-width:600px; background:#FFF8DC; border-radius:20px; overflow:hidden;
-                           box-shadow:0 8px 30px rgba(0,0,0,0.1);">
+                   style="max-width:600px;
+                      background-color:#fff8dc;
+                      border-radius:20px;
+                      overflow:hidden;
+                      box-shadow:0 8px 30px rgba(0,0,0,0.1);
+                      color:#333333 !important;">
 
                 <!-- Header -->
                 <tr>
                     <td align="center"
                         style="background:linear-gradient(90deg,#FFC107,#FFB300);
-                                   padding:45px 20px;">
-                        <h1 style="margin:0; font-size:44px; color:#000000; font-weight:900; letter-spacing:2px;">
+                       padding:45px 20px;">
+                        <h1 style="margin:0;
+                         font-size:44px;
+                         color:#000000;
+                         font-weight:900;
+                         letter-spacing:2px;">
                             TORCH
                         </h1>
                     </td>
@@ -33,34 +57,45 @@
 
                 <!-- Body -->
                 <tr>
-                    <td style="padding:40px 40px; text-align:left;">
-                        <h2 style="color:#FFB300; font-size:26px; margin-bottom:15px;">Verificação de E-mail</h2>
+                    <td style="padding:40px 40px; text-align:left; color:#333333 !important;">
 
-                        <p style="font-size:16px; color:#555; margin-bottom:20px; line-height:1.6;">
+                        <h2 style="color:#FFB300; font-size:26px; margin-bottom:15px;">
+                            Verificação de E-mail
+                        </h2>
+
+                        <p style="font-size:16px; color:#444444; margin-bottom:20px; line-height:1.6;">
                             Olá 👋<br>
                             Obrigado por se cadastrar na
                             <strong style="color:#FFB300;">Torch</strong>.<br>
                             Para confirmar seu endereço de e-mail, utilize o código abaixo:
                         </p>
 
-                        <div style="text-align:center; margin:35px 0;">
-                                <span style="
-                                    display:inline-block;
-                                    background:linear-gradient(90deg,#FFD54F,#FFB300);
-                                    color:#333;
-                                    font-size:38px;
-                                    letter-spacing:8px;
-                                    padding:22px 45px;
-                                    border-radius:15px;
-                                    font-weight:900;
-                                    box-shadow:0 6px 25px rgba(255,181,0,0.4);
-                                    " th:text='${code}'>123456</span>
+                        <!-- GIF animado -->
+                        <div style="text-align:center; margin:20px 0;">
+                            <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmFuOTB6ZGFrZm9jcjVrZjRpMDU4Zm5tNmxremhsNW15amhxc2pwdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/F6pe2qcjU0gkgsbc6g/giphy.gif"
+                                 alt="Animação Torch"
+                                 style="width:200px; height:auto; border-radius:0; box-shadow:none;">
                         </div>
 
-                        <p style="font-size:15px; color:#777; margin-top:25px;">
+                        <!-- Código de verificação -->
+                        <div style="text-align:center; margin:35px 0;">
+                <span style="
+                  display:inline-block;
+                  background:linear-gradient(90deg,#FFD54F,#FFB300);
+                  color:#333333;
+                  font-size:38px;
+                  letter-spacing:8px;
+                  padding:22px 45px;
+                  border-radius:15px;
+                  font-weight:900;
+                  box-shadow:0 6px 25px rgba(255,181,0,0.4);
+                  " th:text='${code}'>123456</span>
+                        </div>
+
+                        <p style="font-size:15px; color:#555555; margin-top:25px;">
                             ⏱ Este código expira em <strong>10 minutos</strong>.
                         </p>
-                        <p style="font-size:15px; color:#888;">
+                        <p style="font-size:15px; color:#666666;">
                             Se você não solicitou este código, ignore este e-mail com segurança.
                         </p>
                     </td>
@@ -68,11 +103,12 @@
 
                 <!-- Footer -->
                 <tr>
-                    <td align="center" style="background-color:#FFF3C4; padding:20px;">
-                        <p style="color:#555; font-size:13px; margin:0;">
+                    <td align="center"
+                        style="background-color:#FFF3C4; padding:20px; color:#333333 !important;">
+                        <p style="color:#555555; font-size:13px; margin:0;">
                             © 2025 <strong style="color:#FFB300;">Torch App</strong> — Todos os direitos reservados.
                         </p>
-                        <p style="color:#666; font-size:12px; margin-top:5px;">
+                        <p style="color:#666666; font-size:12px; margin-top:5px;">
                             Enviado automaticamente por Torch
                         </p>
                     </td>
