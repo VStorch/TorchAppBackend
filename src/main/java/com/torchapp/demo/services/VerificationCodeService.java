@@ -1,10 +1,9 @@
 package com.torchapp.demo.services;
 
 import com.torchapp.demo.exceptions.ResourceNotFoundException;
-import com.torchapp.demo.models.PetShop;
 import com.torchapp.demo.models.VerificationCode;
 import com.torchapp.demo.repositories.VerificationCodeRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -65,6 +64,7 @@ public class VerificationCodeService {
         }
     }
 
+    @Transactional
     @Scheduled(fixedRate = 3600000)
     public void deleteExpiredCodes() {
         verificationCodeRepository.findAll().stream()
@@ -72,6 +72,7 @@ public class VerificationCodeService {
                 .forEach(verificationCodeRepository::delete);
     }
 
+    @Transactional(readOnly = true)
     public boolean isEmailVerified(String email) {
         return verificationCodeRepository.findByEmail(email)
                 .map(VerificationCode::isVerified)

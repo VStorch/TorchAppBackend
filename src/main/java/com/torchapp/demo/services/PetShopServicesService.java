@@ -7,10 +7,12 @@ import com.torchapp.demo.models.PetShopServices;
 import com.torchapp.demo.repositories.PetShopRepository;
 import com.torchapp.demo.repositories.PetShopServicesRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class PetShopServicesService {
     private final PetShopServicesRepository serviceRepository;
     private final PetShopRepository petShopRepository;
@@ -20,6 +22,7 @@ public class PetShopServicesService {
         this.petShopRepository = petShopRepository;
     }
 
+    @Transactional
     public PetShopServices registerService(PetShopServicesRequest request) {
         PetShop petShop = petShopRepository.findById(request.getPetShopId())
                 .orElseThrow(RuntimeException::new);
@@ -39,6 +42,7 @@ public class PetShopServicesService {
         return serviceRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
+    @Transactional
     public PetShopServices updateService(Long id, PetShopServices newServicesData) {
         return serviceRepository.findById(id).map(service -> {
             service.setName(newServicesData.getName());
@@ -46,6 +50,7 @@ public class PetShopServicesService {
         }).orElseThrow(ResourceNotFoundException::new);
     }
 
+    @Transactional
     public void deleteService(Long id) {
         if (!serviceRepository.existsById(id)) {
             throw new ResourceNotFoundException();
