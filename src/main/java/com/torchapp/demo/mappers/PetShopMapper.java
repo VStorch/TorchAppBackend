@@ -8,9 +8,6 @@ public class PetShopMapper {
 
     public static PetShop toEntity(PetShopRegistrationRequest request) {
         PetShop petShop = new PetShop();
-        petShop.setName(request.getName());
-        petShop.setPhone(request.getPhone());
-        petShop.setEmail(request.getEmail());
         petShop.setCnpj(request.getCnpj());
         return petShop;
     }

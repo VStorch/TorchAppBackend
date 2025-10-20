@@ -1,11 +1,15 @@
 package com.torchapp.demo.services;
 
+import com.torchapp.demo.dtos.petshop.PetShopRegistrationRequest;
 import com.torchapp.demo.dtos.petshop.PetShopResponse;
 import com.torchapp.demo.dtos.petshop.PetShopUpdateRequest;
 import com.torchapp.demo.exceptions.ResourceNotFoundException;
 import com.torchapp.demo.mappers.PetShopMapper;
 import com.torchapp.demo.models.PetShop;
+import com.torchapp.demo.models.User;
 import com.torchapp.demo.repositories.PetShopRepository;
+import com.torchapp.demo.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +20,30 @@ import java.util.Optional;
 public class PetShopService {
 
     private final PetShopRepository petShopRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    public PetShopService(PetShopRepository petShopRepository, PasswordEncoder passwordEncoder) {
+    public PetShopService(PetShopRepository petShopRepository, UserRepository userRepository) {
         this.petShopRepository = petShopRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
-    public Optional<PetShop> registerPetShop(PetShop petShop) {
-        return Optional.of(petShopRepository.save(petShop));
+    @Transactional
+    public Optional<PetShop> registerPetShop(PetShopRegistrationRequest request) {
+        User owner = userRepository.findById(request.getOwnerId())
+                .orElseThrow(() -> new ResourceNotFoundException());
+
+        if (!owner.getRole().name().equals("PETSHOP_OWNER")) {
+            throw new RuntimeException("Usuário não é um dono de PetShop válido.");
+        }
+
+        PetShop petShop = PetShopMapper.toEntity(request);
+        petShop.setOwner(owner);
+        petShop.setEmail(owner.getEmail());
+        petShop.setApproved(false); // Aguarda aprovação do admin
+
+        PetShop saved = petShopRepository.save(petShop);
+
+        return Optional.of(saved);
     }
 
     public List<PetShopResponse> getPetShops() {
@@ -64,11 +83,6 @@ public class PetShopService {
             throw new ResourceNotFoundException();
         }
         petShopRepository.deleteById(id);
-    }
-
-    public Optional<PetShop> login(String email, String rawPassword) {
-        return petShopRepository.findByEmail(email)
-                .filter(petShop -> passwordEncoder.matches(rawPassword, petShop.getPassword()));
     }
 
     public boolean emailExists(String email) {

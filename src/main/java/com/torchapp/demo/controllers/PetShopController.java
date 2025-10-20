@@ -30,9 +30,8 @@ public class PetShopController {
 
     @PostMapping
     public ResponseEntity<?> registerPetShop(@Valid @RequestBody PetShopRegistrationRequest registrationRequest) throws MessagingException, UnsupportedOperationException {
-        PetShop petShop = PetShopMapper.toEntity(registrationRequest);
 
-        return petShopService.registerPetShop(petShop)
+        return petShopService.registerPetShop(registrationRequest)
                 .map(savedPetShop -> {
                     //emailService.sendMailWithInline(savedPetShop); Ajustar questão do envio de email
                     return ResponseEntity.status(201).body(PetShopMapper.toResponse(savedPetShop));
@@ -60,14 +59,6 @@ public class PetShopController {
     public ResponseEntity<Void> deletePetShop(@PathVariable Long id) {
         petShopService.deletePetShop(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login (@Valid @RequestBody LoginRequest loginRequest) {
-        return petShopService.login(loginRequest.getEmail(), loginRequest.getPassword())
-                .<ResponseEntity<?>>map(petShop -> ResponseEntity.ok(PetShopMapper.toResponse(petShop))
-                )
-                .orElse(ResponseEntity.status(401).body(new ErrorResponse("Credenciais inválidas")));
     }
 
     @GetMapping("/email/{email}")
