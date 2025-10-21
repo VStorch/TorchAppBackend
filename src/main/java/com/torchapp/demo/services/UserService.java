@@ -7,7 +7,7 @@ import com.torchapp.demo.exceptions.ResourceNotFoundException;
 import com.torchapp.demo.mappers.UserMapper;
 import com.torchapp.demo.models.User;
 import com.torchapp.demo.repositories.UserRepository;
-import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -26,6 +27,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public Optional<User> registerUser(User user) {
         if (emailExists(user.getEmail())) {
             throw new IllegalArgumentException("Email já cadastrado.");
@@ -35,6 +37,7 @@ public class UserService {
         return Optional.of(userRepository.save(user));
     }
 
+    @Transactional
     public Optional<User> registerPetShopOwner(User user, VerificationCodeService verificationCodeService) {
         if (emailExists(user.getEmail())) {
             throw new IllegalArgumentException("Email já cadastrado.");
@@ -63,6 +66,7 @@ public class UserService {
         return UserMapper.toResponse(user);
     }
 
+    @Transactional
     public User updateUser(Long id, UserUpdateRequest userUpdateRequest) {
         return userRepository.findById(id).map(user -> {
             user.setName(userUpdateRequest.getName());
@@ -73,6 +77,7 @@ public class UserService {
         }).orElseThrow(ResourceNotFoundException::new);
     }
 
+    @Transactional
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
             throw new ResourceNotFoundException();
@@ -85,6 +90,7 @@ public class UserService {
                 .filter(user -> passwordEncoder.matches(rawPassword, user.getPassword()));
     }
 
+
     public boolean emailExists(String email) {
         return userRepository.findByEmail(email).isPresent();
     }
@@ -93,6 +99,7 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    @Transactional
     public Optional<User> generatePasswordResetToken(String email) {
         return userRepository.findByEmail(email).map(user -> {
             String token = UUID.randomUUID().toString();
@@ -102,6 +109,7 @@ public class UserService {
         });
     }
 
+    @Transactional
     public void resetPassword(String token, String newPassword) {
         User user = userRepository.findByResetToken(token).
                 orElseThrow(() -> new RuntimeException("Token inválido ou expirado."));

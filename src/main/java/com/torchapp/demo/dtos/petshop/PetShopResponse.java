@@ -8,7 +8,13 @@ import lombok.Getter;
 public class PetShopResponse {
     private Long id;
     private String name;
-    private String address;
+    private String cep;
+    private String state;
+    private String city;
+    private String neighborhood;
+    private String street;
+    private String number;
+    private String addressComplement;
     private String phone;
     private String email;
     private String cnpj;

@@ -44,8 +44,8 @@ public class UserController {
     }
 
     @PostMapping("/petshop-owner")
-    public ResponseEntity<?> registerOwner(@RequestBody UserRegistrationRequest request) {
-        User user = UserMapper.toEntity(request);
+    public ResponseEntity<?> registerOwner(@Valid @RequestBody OwnerRegistrationRequest request) {
+        User user = UserMapper.toEntityOwner(request);
         Optional<User> saved = userService.registerPetShopOwner(user, verificationCodeService);
         return ResponseEntity.status(201).body("Dono de PetShop cadastrado com sucesso.");
     }

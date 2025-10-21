@@ -7,11 +7,13 @@ import com.torchapp.demo.models.User;
 import com.torchapp.demo.repositories.PetRepository;
 import com.torchapp.demo.repositories.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 public class PetService {
     private final PetRepository petRepository;
     private final UserRepository userRepository;
@@ -21,6 +23,7 @@ public class PetService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public Pet registerPet(PetRequest request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(ResourceNotFoundException::new);
@@ -43,6 +46,7 @@ public class PetService {
         return petRepository.findById(id).orElseThrow((ResourceNotFoundException::new));
      }
 
+     @Transactional
      public Pet updatePet (Long id, Pet newPetData) {
         return petRepository.findById(id).map(pet -> {
             pet.setName(newPetData.getName());
@@ -55,6 +59,7 @@ public class PetService {
         }).orElseThrow(ResourceNotFoundException::new);
      }
 
+     @Transactional
      public void deletePet (Long id) {
         if (!petRepository.existsById(id)) {
             throw new ResourceNotFoundException();
