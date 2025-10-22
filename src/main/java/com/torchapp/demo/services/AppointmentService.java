@@ -7,12 +7,13 @@ import com.torchapp.demo.exceptions.ResourceNotFoundException;
 import com.torchapp.demo.mappers.AppointmentMapper;
 import com.torchapp.demo.models.*;
 import com.torchapp.demo.repositories.*;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
@@ -79,6 +80,14 @@ public class AppointmentService {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado."));
         return AppointmentMapper.toResponse(appointment);
+    }
+
+    @Transactional
+    public void deleteAppointment(Long id) {
+        if(!appointmentRepository.existsById(id)) {
+            throw new ResourceNotFoundException();
+        }
+        appointmentRepository.deleteById(id);
     }
 
 }
