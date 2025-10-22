@@ -40,4 +40,8 @@ public class Appointment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id", nullable = false)
     private PetShopServices service;
+
+    @OneToOne
+    @JoinColumn(name = "slot_id", nullable = false)
+    private AvailableSlot slot;
 }

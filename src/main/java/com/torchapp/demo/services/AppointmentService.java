@@ -83,6 +83,21 @@ public class AppointmentService {
     }
 
     @Transactional
+    public void cancelAppointment(Long id) {
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado."));
+
+        appointment.setStatus(AppointmentStatus.CANCELLED);
+        appointmentRepository.save(appointment);
+
+        AvailableSlot slot = appointment.getSlot();
+        if (slot != null) {
+            slot.setBooked(false);
+            availableSlotRepository.save(slot);
+        }
+    }
+
+    @Transactional
     public void deleteAppointment(Long id) {
         if(!appointmentRepository.existsById(id)) {
             throw new ResourceNotFoundException();
