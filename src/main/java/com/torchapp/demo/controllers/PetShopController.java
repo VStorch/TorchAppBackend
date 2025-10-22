@@ -11,6 +11,7 @@ import com.torchapp.demo.services.EmailService;
 import com.torchapp.demo.services.PetShopService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,8 +46,8 @@ public class PetShopController {
     }
 
     @GetMapping("/{id}")
-    public PetShopResponse getPetShopById(@PathVariable Long id) {
-        return petShopService.getPetShopByIdResponse(id);
+    public ResponseEntity<PetShopResponse> getPetShopById(@PathVariable Long id) {
+        return ResponseEntity.ok(petShopService.getPetShopByIdResponse(id));
     }
 
     @PutMapping("/{id}")
