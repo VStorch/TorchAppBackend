@@ -1,12 +1,16 @@
 package com.torchapp.demo.services;
 
 import com.torchapp.demo.dtos.appointment.AppointmentRequest;
+import com.torchapp.demo.dtos.appointment.AppointmentResponse;
 import com.torchapp.demo.enums.AppointmentStatus;
 import com.torchapp.demo.exceptions.ResourceNotFoundException;
+import com.torchapp.demo.mappers.AppointmentMapper;
 import com.torchapp.demo.models.*;
 import com.torchapp.demo.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AppointmentService {
@@ -28,7 +32,7 @@ public class AppointmentService {
     }
 
     @Transactional
-    public Appointment createAppointment(AppointmentRequest request) {
+    public AppointmentResponse createAppointment(AppointmentRequest request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
         Pet pet = petRepository.findById(request.getPetId())
@@ -62,7 +66,19 @@ public class AppointmentService {
         appointment.setService(service);
 
         availableSlotRepository.save(slot);
-        return appointmentRepository.save(appointment);
+        Appointment saved = appointmentRepository.save(appointment);
+        return AppointmentMapper.toResponse(saved);
+    }
+
+    public List<AppointmentResponse> getAppointments() {
+        return appointmentRepository.findAll().stream()
+                .map(AppointmentMapper::toResponse).toList();
+    }
+
+    public AppointmentResponse getAppointmentById(Long id) {
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado."));
+        return AppointmentMapper.toResponse(appointment);
     }
 
 }

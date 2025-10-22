@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/appointments")
 public class AppointmentController {
@@ -25,7 +27,8 @@ public class AppointmentController {
 
     @PostMapping
     public ResponseEntity<AppointmentResponse> createAppointment(@Valid @RequestBody AppointmentRequest request) {
-        Appointment appointment = appointmentService.createAppointment(request);
-        return ResponseEntity.status(201).body(AppointmentMapper.toResponse(appointment));
+        return ResponseEntity.status(201).body(appointmentService.createAppointment(request));
     }
+
+
 }
