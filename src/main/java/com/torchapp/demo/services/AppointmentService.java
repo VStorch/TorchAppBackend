@@ -65,8 +65,9 @@ public class AppointmentService {
         appointment.setPet(pet);
         appointment.setPetShop(petShop);
         appointment.setService(service);
+        appointment.setSlot(slot);
 
-        availableSlotRepository.save(slot);
+        //availableSlotRepository.save(slot);
         Appointment saved = appointmentRepository.save(appointment);
         return AppointmentMapper.toResponse(saved);
     }
