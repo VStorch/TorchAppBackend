@@ -26,8 +26,8 @@ public class EvaluatePetShop {
     @Size(max = 1000)
     private String comment;
 
-    @NotNull
-    private LocalDate date = LocalDate.now();
+    @Column(nullable = false, updatable = false)
+    private LocalDate date;
 
     // EvaluatePetShop pertence a um PetShop avaliado
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,4 +38,9 @@ public class EvaluatePetShop {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @PrePersist
+    protected void onCreate() {
+        this.date = LocalDate.now();
+    }
 }
