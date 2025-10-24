@@ -1,11 +1,10 @@
 package com.torchapp.demo.dtos.user;
 
-import com.torchapp.demo.models.User;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@AllArgsConstructor
+@SuperBuilder
 public class UserResponse {
     private Long id;
     private String name;

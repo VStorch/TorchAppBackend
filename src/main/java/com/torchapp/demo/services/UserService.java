@@ -1,5 +1,6 @@
 package com.torchapp.demo.services;
 
+import com.torchapp.demo.dtos.user.OwnerUpdateRequest;
 import com.torchapp.demo.dtos.user.UserResponse;
 import com.torchapp.demo.dtos.user.UserUpdateRequest;
 import com.torchapp.demo.enums.Role;
@@ -72,6 +73,18 @@ public class UserService {
             user.setName(userUpdateRequest.getName());
             user.setSurname(userUpdateRequest.getSurname());
             user.setEmail(userUpdateRequest.getEmail());
+
+            return userRepository.save(user);
+        }).orElseThrow(ResourceNotFoundException::new);
+    }
+
+    @Transactional
+    public User updateOwner(Long id, OwnerUpdateRequest request) {
+        return userRepository.findById(id).map(user -> {
+            user.setName(request.getName());
+            user.setSurname(request.getSurname());
+            user.setPhone(request.getPhone());
+            user.setEmail(request.getEmail());
 
             return userRepository.save(user);
         }).orElseThrow(ResourceNotFoundException::new);

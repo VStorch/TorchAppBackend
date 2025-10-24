@@ -69,6 +69,12 @@ public class UserController {
         return ResponseEntity.ok(UserMapper.toResponse(updateUser));
     }
 
+    @PutMapping("/petshop-owner/{id}")
+    public ResponseEntity<OwnerResponse> updateOwner(@PathVariable Long id, @RequestBody OwnerUpdateRequest request) {
+        User updateOwner = userService.updateOwner(id, request);
+        return ResponseEntity.ok(UserMapper.toResponseOwner(updateOwner));
+    }
+
     // Endpoint para deletar um usuário
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
@@ -81,7 +87,7 @@ public class UserController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         return userService.login(loginRequest.getEmail(), loginRequest.getPassword())
                 .<ResponseEntity<?>>map(user -> ResponseEntity.ok(
-                        new UserResponse(user.getId(), user.getName(), user.getSurname(), user.getEmail())
+                        UserMapper.toResponse(user)
                 ))
                 .orElse(ResponseEntity.status(401).body(new ErrorResponse("Credenciais inválidas")));
     }
