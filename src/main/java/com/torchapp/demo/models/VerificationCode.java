@@ -27,7 +27,7 @@ public class VerificationCode {
     @Column(nullable = false)
     private LocalDateTime expirationTime;
 
-    private int attempts;
+    private int attempts = 0;
 
     private boolean verified;
 

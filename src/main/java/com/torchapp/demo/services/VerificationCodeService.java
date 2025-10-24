@@ -29,12 +29,16 @@ public class VerificationCodeService {
     public void sendVerificationCode(String email) {
         String code = String.valueOf(random.nextInt(90_000) + 10_000);
 
-        VerificationCode verification = verificationCodeRepository.findByEmail(email).orElse(new VerificationCode());
+        VerificationCode verification = verificationCodeRepository.findByEmail(email).orElse(null);
 
-        verification.setEmail(email);
+        if (verification == null) {
+            verification = new VerificationCode();
+            verification.setEmail(email);
+            verification.setAttempts(0);
+        }
+
         verification.setCode(code);
         verification.setExpirationTime(LocalDateTime.now().plusMinutes(EXPIRATION_MINUTES));
-        verification.setAttempts(0);
         verification.setVerified(false);
 
         verificationCodeRepository.save(verification);
