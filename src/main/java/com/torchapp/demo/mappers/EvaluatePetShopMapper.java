@@ -10,8 +10,8 @@ public class EvaluatePetShopMapper {
 
     public static EvaluatePetShop toEntity(EvaluatePetShopRequest request, PetShop petShop, User user) {
         EvaluatePetShop evaluate = new EvaluatePetShop();
-        evaluate.setRating(evaluate.getRating());
-        evaluate.setComment(evaluate.getComment());
+        evaluate.setRating(request.getRating());
+        evaluate.setComment(request.getComment());
         evaluate.setPetShop(petShop);
         evaluate.setUser(user);
         return evaluate;
