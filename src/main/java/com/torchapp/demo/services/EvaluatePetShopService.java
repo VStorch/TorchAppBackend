@@ -16,6 +16,8 @@ import com.torchapp.demo.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class EvaluatePetShopService {
 
@@ -72,5 +74,16 @@ public class EvaluatePetShopService {
         petShop.setTotalRatings(total + 1);
         petShop.setAverageRating(newAverage);
         petShopRepository.save(petShop);
+    }
+
+    @Transactional(readOnly = true)
+    public List<EvaluatePetShopResponse> listByPetShop(Long id) {
+        PetShop petShop = petShopRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("PetShop não encontrado."));
+        List<EvaluatePetShop> evaluations = evaluateRepository.findAllByPetShopId(petShop.getId());
+
+        return evaluations.stream()
+                .map(EvaluatePetShopMapper::toResponse)
+                .toList();
     }
 }

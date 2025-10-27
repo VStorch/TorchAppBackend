@@ -5,10 +5,9 @@ import com.torchapp.demo.dtos.evaluate.EvaluatePetShopResponse;
 import com.torchapp.demo.services.EvaluatePetShopService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/evaluate")
@@ -24,5 +23,11 @@ public class EvaluatePetShopController {
     public ResponseEntity<EvaluatePetShopResponse> evaluate(@Valid @RequestBody EvaluatePetShopRequest request) {
         EvaluatePetShopResponse response = evaluateService.evaluatePetShop(request);
         return ResponseEntity.status(201).body(response);
+    }
+
+    @GetMapping("/{petShopId}")
+    public ResponseEntity<List<EvaluatePetShopResponse>> listByPetShop(@PathVariable Long petShopId) {
+        List<EvaluatePetShopResponse> responses = evaluateService.listByPetShop(petShopId);
+        return ResponseEntity.ok(responses);
     }
 }
