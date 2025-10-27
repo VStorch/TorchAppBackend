@@ -1,17 +1,14 @@
 package com.torchapp.demo.infra;
 
+import com.torchapp.demo.exceptions.BadRequestException;
 import com.torchapp.demo.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.HttpServletBean;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +19,15 @@ public class RestExceptionHandler {
     private ResponseEntity<RestErrorMessage> resourceNotFoundHandler (ResourceNotFoundException e, HttpServletRequest request) {
         RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.NOT_FOUND, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+    }
+
+    private ResponseEntity<RestErrorMessage> handleBadRequest(BadRequestException e, HttpServletRequest request) {
+        RestErrorMessage errorMessage = new RestErrorMessage(
+                HttpStatus.BAD_REQUEST,
+                e.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
 
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})

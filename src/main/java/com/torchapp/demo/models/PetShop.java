@@ -51,4 +51,10 @@ public class PetShop {
 
     @OneToMany(mappedBy = "petShop", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Appointment> appointments = new ArrayList<>();
+
+    @Column(nullable = false)
+    private int totalRatings = 0;
+
+    @Column(nullable = false)
+    private double averageRating = 0.0;
 }

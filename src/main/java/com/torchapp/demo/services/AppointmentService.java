@@ -3,11 +3,11 @@ package com.torchapp.demo.services;
 import com.torchapp.demo.dtos.appointment.AppointmentRequest;
 import com.torchapp.demo.dtos.appointment.AppointmentResponse;
 import com.torchapp.demo.enums.AppointmentStatus;
+import com.torchapp.demo.exceptions.BadRequestException;
 import com.torchapp.demo.exceptions.ResourceNotFoundException;
 import com.torchapp.demo.mappers.AppointmentMapper;
 import com.torchapp.demo.models.*;
 import com.torchapp.demo.repositories.*;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -108,7 +108,7 @@ public class AppointmentService {
     }
 
     @Transactional
-    public void completeAppointment(Long id) throws BadRequestException {
+    public void completeAppointment(Long id) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado."));
 
