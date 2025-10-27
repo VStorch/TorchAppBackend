@@ -7,6 +7,7 @@ import com.torchapp.demo.exceptions.ResourceNotFoundException;
 import com.torchapp.demo.mappers.AppointmentMapper;
 import com.torchapp.demo.models.*;
 import com.torchapp.demo.repositories.*;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -106,4 +107,19 @@ public class AppointmentService {
         appointmentRepository.deleteById(id);
     }
 
+    @Transactional
+    public void completeAppointment(Long id) throws BadRequestException {
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado."));
+
+        if (appointment.getStatus() == AppointmentStatus.CANCELLED) {
+            throw new BadRequestException("Não é possível concluir um agendamento cancelado.");
+        }
+        if (appointment.getStatus() == AppointmentStatus.COMPLETED) {
+            throw new BadRequestException("Este agendamento já foi concluído");
+        }
+
+        appointment.setStatus(AppointmentStatus.COMPLETED);
+        appointmentRepository.save(appointment);
+    }
 }

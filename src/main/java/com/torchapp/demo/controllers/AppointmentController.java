@@ -6,6 +6,7 @@ import com.torchapp.demo.mappers.AppointmentMapper;
 import com.torchapp.demo.models.Appointment;
 import com.torchapp.demo.services.AppointmentService;
 import jakarta.validation.Valid;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,12 @@ public class AppointmentController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAppointment(@PathVariable Long id) {
         appointmentService.deleteAppointment(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/complete")
+    public ResponseEntity<Void> completeAppointment(@PathVariable Long id) throws BadRequestException {
+        appointmentService.completeAppointment(id);
         return ResponseEntity.noContent().build();
     }
 }
