@@ -2,12 +2,8 @@ package com.torchapp.demo.controllers;
 
 import com.torchapp.demo.dtos.appointment.AppointmentRequest;
 import com.torchapp.demo.dtos.appointment.AppointmentResponse;
-import com.torchapp.demo.mappers.AppointmentMapper;
-import com.torchapp.demo.models.Appointment;
 import com.torchapp.demo.services.AppointmentService;
 import jakarta.validation.Valid;
-import org.apache.coyote.BadRequestException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +47,7 @@ public class AppointmentController {
     }
 
     @PutMapping("/{id}/complete")
-    public ResponseEntity<Void> completeAppointment(@PathVariable Long id) throws BadRequestException {
+    public ResponseEntity<Void> completeAppointment(@PathVariable Long id) {
         appointmentService.completeAppointment(id);
         return ResponseEntity.noContent().build();
     }
