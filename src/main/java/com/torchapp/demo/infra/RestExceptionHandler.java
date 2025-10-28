@@ -30,9 +30,9 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
 
-    @ExceptionHandler(VerificationCodeException.class)
+    @ExceptionHandler(VerificationCodeExpiredException.class)
     private ResponseEntity<RestErrorMessage> handleCodeExpired(
-            VerificationCodeException e,
+            VerificationCodeExpiredException e,
             HttpServletRequest request
     ) {
         RestErrorMessage errorMessage = new RestErrorMessage(
