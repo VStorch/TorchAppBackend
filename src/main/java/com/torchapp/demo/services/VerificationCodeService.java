@@ -47,24 +47,25 @@ public class VerificationCodeService {
 
     @Transactional
     public boolean verifyCode(String email, String code) {
-        VerificationCode verification = verificationCodeRepository.findByEmail(email)
+        VerificationCode verification = verificationCodeRepository.findByEmailForUpdate(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Nunhum código gerado para este PetShop."));
         if (verification.isExpired()) {
             throw new RuntimeException("O código expirou. Solicite um novo.");
         }
-        if (verification.getAttempts() >= MAX_ATTEMPTS) {
+        if (verification.getAttempts() + 1 > MAX_ATTEMPTS) {
             throw new RuntimeException("Limite de tentativas excedido.");
         }
-
-        verification.setAttempts(verification.getAttempts() + 1);
 
         if (verification.getCode().equals(code)) {
             verification.setVerified(true);
             verificationCodeRepository.save(verification);
             return true;
         } else {
+            verification.setAttempts(verification.getAttempts() + 1);
             verificationCodeRepository.save(verification);
-            throw new RuntimeException("Código incorreto");
+
+            int remaining = MAX_ATTEMPTS - verification.getAttempts();
+            throw new RuntimeException("Código incorreto. Tentativas restantes: " + remaining + " para " + verification.getId());
         }
     }
 
