@@ -37,17 +37,17 @@ public class EmailService {
     public void sendMailWithInline(User user) {
         try {
             String confirmationUrl = "generated_confirmation_url";
-            String mailFrom = environment.getProperty("spring.mail.properties.mail.smtp.from");
-            String mailFromName = environment.getProperty("mail.from.name", "Identity");
+            String mailFrom = getMailFrom();
+            String mailFromName = getMailFromName();
 
             final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
             final MimeMessageHelper email = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
             email.setTo(user.getEmail());
-            email.setSubject("Seja bem vindo ao Torch!");
+            email.setSubject("Seja bem vindo(a) ao Torch!");
             email.setFrom(new InternetAddress(mailFrom, mailFromName));
 
-            final Context ctx = new Context(LocaleContextHolder.getLocale());
+            final Context ctx = createContext();
             ctx.setVariable("email", user.getEmail());
             ctx.setVariable("name", user.getName());
             ctx.setVariable("torch", TORCH_LOGO_IMAGE);
@@ -68,12 +68,11 @@ public class EmailService {
         }
     }
 
-    @SneakyThrows
     @Async
     public void sendRedirectMail (User user) {
         try {
-            String mailFrom = environment.getProperty("spring.mail.properties.mail.smtp.from");
-            String mailFromName = environment.getProperty("mail.from.name", "Identity");
+            String mailFrom = getMailFrom();
+            String mailFromName = getMailFromName();
 
             final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
             final MimeMessageHelper email = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -82,7 +81,7 @@ public class EmailService {
             email.setSubject("Recuperação de Senha");
             email.setFrom(new InternetAddress(mailFrom, mailFromName));
 
-            final Context ctx = new Context(LocaleContextHolder.getLocale());
+            final Context ctx = createContext();
             ctx.setVariable("email", user.getEmail());
             ctx.setVariable("name", user.getName());
 
@@ -93,19 +92,19 @@ public class EmailService {
             email.setText(htmlContent, true);
 
             mailSender.send(mimeMessage);
+            log.info("Email de recuperação de senha enviado com sucesso para: {}", user.getEmail());
         }
         catch (Exception e) {
-            System.err.println("Falha ao enviar email "+ e.getMessage());
-            e.printStackTrace();
+            log.error("Falha ao enviar email de recuperação para {}: {}", user.getEmail(), e.getMessage(), e);
+            throw new EmailSendException("Falha ao enviar email de recuperação de senha", e);
         }
     }
 
-    @SneakyThrows
     @Async
     public void sendVerificationCodeMail(String email, String code) {
         try {
-            String mailFrom = environment.getProperty("spring.mail.properties.mail.smtp.from");
-            String mailFromName = environment.getProperty("mail.from.name", "Identity");
+            String mailFrom = getMailFrom();
+            String mailFromName = getMailFromName();
 
             final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
             final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -114,7 +113,7 @@ public class EmailService {
             message.setSubject("Código de Verificação - Torch");
             message.setFrom(new InternetAddress(mailFrom, mailFromName));
 
-            final Context ctx = new Context(LocaleContextHolder.getLocale());
+            final Context ctx = createContext();
             ctx.setVariable("email", email);
             ctx.setVariable("code", code);
 
@@ -122,9 +121,22 @@ public class EmailService {
             message.setText(htmlContent, true);
 
             mailSender.send(mimeMessage);
+            log.info("Email de verificação enviado com sucesso para: {}", email);
         } catch (Exception e) {
-            System.err.println("Falha ao enviar email de verificação: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Falha ao enviar email de verificação para {}: {}", email, e.getMessage(), e);
+            throw new EmailSendException("Falha ao enviar email de verificação", e);
         }
+    }
+
+    private String getMailFrom() {
+        return environment.getProperty("spring.mail.properties.mail.smtp.from");
+    }
+
+    private String getMailFromName() {
+        return environment.getProperty("mail.from.name", "Identity");
+    }
+
+    private Context createContext() {
+        return new Context(LocaleContextHolder.getLocale());
     }
 }

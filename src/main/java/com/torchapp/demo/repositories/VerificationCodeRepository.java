@@ -11,9 +11,9 @@ import java.util.Optional;
 
 public interface VerificationCodeRepository extends JpaRepository<VerificationCode, Long> {
 
+    Optional<VerificationCode> findByEmail(String email);
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select v from VerificationCode v where v.email = :email")
     Optional<VerificationCode> findByEmailForUpdate(@Param("email") String email);
-
-    Optional<VerificationCode> findByEmail(String email);
 }
