@@ -18,11 +18,9 @@ import java.util.Map;
 public class VerificationController {
 
     private final VerificationCodeService verificationCodeService;
-    private final PetShopService petShopService;
 
-    public VerificationController(VerificationCodeService verificationCodeService, PetShopService petShopService) {
+    public VerificationController(VerificationCodeService verificationCodeService) {
         this.verificationCodeService = verificationCodeService;
-        this.petShopService = petShopService;
     }
 
     @PostMapping("/send")
