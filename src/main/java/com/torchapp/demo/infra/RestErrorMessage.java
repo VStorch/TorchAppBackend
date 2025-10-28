@@ -17,6 +17,7 @@ public class RestErrorMessage {
     private String path;
     private LocalDateTime timestamp;
     private Map<String, String> errors;
+    private Map<String, Object> data;
 
     public RestErrorMessage(HttpStatus status, String message, String path) {
         this.status = status;
@@ -25,8 +26,13 @@ public class RestErrorMessage {
         this.timestamp = LocalDateTime.now();
     }
 
-    public RestErrorMessage(HttpStatus status, String message, String path, Map<String, String> errors) {
+    public RestErrorMessage(HttpStatus status, String message, String path, Map<String, String> errors, boolean isErrorMap) {
         this(status, message, path);
         this.errors = errors;
+    }
+
+    public RestErrorMessage(HttpStatus status, String message, String path, Map<String, Object> data) {
+        this(status, message, path);
+        this.data = data;
     }
 }
