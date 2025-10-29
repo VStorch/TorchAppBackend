@@ -43,7 +43,7 @@ public class VerificationCodeService {
             verification.setCode(code);
             verification.setExpirationTime(LocalDateTime.now().plusMinutes(EXPIRATION_MINUTES));
             verification.setVerified(false);
-            verification.setAttempts(0);
+            // verification.setAttempts(0); Problema?
 
             verificationCodeRepository.save(verification);
             emailService.sendVerificationCodeMail(email, code);
@@ -78,7 +78,6 @@ public class VerificationCodeService {
 
         if (verification.getCode().equals(code)) {
             verification.setVerified(true);
-            verification.setAttempts(verification.getAttempts() + 1);
             verificationCodeRepository.save(verification);
             log.info("Código verificado com sucesso para: {}", email);
             return true;
