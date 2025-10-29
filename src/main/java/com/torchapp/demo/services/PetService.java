@@ -42,6 +42,13 @@ public class PetService {
         return petRepository.findAll();
      }
 
+     public List<Pet> getPetsByUserId(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("Usuário não encontrado.");
+        }
+        return petRepository.findByUserId(userId);
+     }
+
      public Pet getPetById(Long id) {
         return petRepository.findById(id).orElseThrow((ResourceNotFoundException::new));
      }

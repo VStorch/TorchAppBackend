@@ -35,9 +35,18 @@ public class PetController {
                 .toList();
     }
 
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<List<PetResponse>> getPetsByUserId(@PathVariable Long userId) {
+        List<PetResponse> pets = petService.getPetsByUserId(userId)
+                .stream()
+                .map(PetMapper::toResponse)
+                .toList();
+        return ResponseEntity.ok(pets);
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<PetResponse> getPetById(@PathVariable Long id) {
-        Pet pet = petService.getPetById(id);
+    public ResponseEntity<PetResponse> getPetById(@PathVariable Long petId) {
+        Pet pet = petService.getPetById(petId);
         return ResponseEntity.ok(PetMapper.toResponse(pet));
     }
 
