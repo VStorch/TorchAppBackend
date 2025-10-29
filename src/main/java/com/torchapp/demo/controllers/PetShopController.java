@@ -30,11 +30,10 @@ public class PetShopController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registerPetShop(@Valid @RequestBody PetShopRegistrationRequest registrationRequest) throws MessagingException, UnsupportedOperationException {
+    public ResponseEntity<?> registerPetShop(@Valid @RequestBody PetShopRegistrationRequest registrationRequest) {
 
         return petShopService.registerPetShop(registrationRequest)
                 .map(savedPetShop -> {
-                    //emailService.sendMailWithInline(savedPetShop); Ajustar questão do envio de email
                     return ResponseEntity.status(201).body(PetShopMapper.toResponse(savedPetShop));
                 })
                 .orElse(ResponseEntity.status(401).body(null));
