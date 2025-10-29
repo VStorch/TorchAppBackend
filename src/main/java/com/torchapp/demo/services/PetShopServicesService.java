@@ -25,7 +25,7 @@ public class PetShopServicesService {
     @Transactional
     public PetShopServices registerService(PetShopServicesRequest request) {
         PetShop petShop = petShopRepository.findById(request.getPetShopId())
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new ResourceNotFoundException("PetShop não encontrado."));
         PetShopServices services = new PetShopServices();
         services.setName(request.getName());
         services.setPrice(request.getPrice());
@@ -36,6 +36,13 @@ public class PetShopServicesService {
 
     public List<PetShopServices> getPetShopServices() {
         return serviceRepository.findAll();
+    }
+
+    public List<PetShopServices> getPetShopServicesByPetShopId(Long petShopId) {
+        if (!petShopRepository.existsById(petShopId)) {
+            throw new ResourceNotFoundException("PetShop não encontrado.");
+        }
+        return serviceRepository.findByPetShopId(petShopId);
     }
 
     public PetShopServices getPetShopServiceById(Long id) {

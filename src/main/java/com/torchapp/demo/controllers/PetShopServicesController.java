@@ -35,6 +35,15 @@ public class PetShopServicesController {
                 .toList();
     }
 
+    @GetMapping("/petshops/{petShopId}")
+    public ResponseEntity<List<PetShopServicesResponse>> getServicesByPetShopId(@PathVariable Long petShopId) {
+        List<PetShopServicesResponse> services = petShopServicesService.getPetShopServicesByPetShopId(petShopId)
+                .stream()
+                .map(PetShopServicesMapper::toResponse)
+                .toList();
+        return ResponseEntity.ok(services);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<PetShopServicesResponse> getServiceById(@PathVariable Long id) {
         PetShopServices service = petShopServicesService.getPetShopServiceById(id);
