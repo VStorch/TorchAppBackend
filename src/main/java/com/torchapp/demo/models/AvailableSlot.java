@@ -16,15 +16,12 @@ public class AvailableSlot {
     private Long id;
 
     private LocalDate date;
-
     private LocalTime startTime;
-
     private LocalTime endTime;
-
     private boolean booked = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "petshop_id", nullable = false)
-    private PetShop petShop;
+    @JoinColumn(name = "petshop_service_id", nullable = false)
+    private PetShopServices petShopService;
 
 }

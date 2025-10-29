@@ -6,9 +6,9 @@ import com.torchapp.demo.dtos.slot.AvailableSlotResponse;
 import com.torchapp.demo.exceptions.ResourceNotFoundException;
 import com.torchapp.demo.mappers.AvailableSlotMapper;
 import com.torchapp.demo.models.AvailableSlot;
-import com.torchapp.demo.models.PetShop;
+import com.torchapp.demo.models.PetShopServices;
 import com.torchapp.demo.repositories.AvailableSlotRepository;
-import com.torchapp.demo.repositories.PetShopRepository;
+import com.torchapp.demo.repositories.PetShopServicesRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,20 +21,20 @@ import java.util.List;
 public class AvailableSlotService {
 
     private final AvailableSlotRepository availableSlotRepository;
-    private final PetShopRepository petShopRepository;
+    private final PetShopServicesRepository petShopServicesRepository;
 
-    public AvailableSlotService(AvailableSlotRepository availableSlotRepository, PetShopRepository petShopRepository) {
+    public AvailableSlotService(AvailableSlotRepository availableSlotRepository, PetShopServicesRepository petShopServicesRepository) {
         this.availableSlotRepository = availableSlotRepository;
-        this.petShopRepository = petShopRepository;
+        this.petShopServicesRepository = petShopServicesRepository;
     }
 
     @Transactional
     public AvailableSlotResponse createSlot(AvailableSlotRequest request) {
-        PetShop petShop = petShopRepository.findById(request.getPetShopId())
-                .orElseThrow(() -> new ResourceNotFoundException("PetShop não encontrado."));
+        PetShopServices service = petShopServicesRepository.findById(request.getServiceId())
+                .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado."));
 
         AvailableSlot slot = new AvailableSlot();
-        slot.setPetShop(petShop);
+        slot.setPetShopService(service);
         slot.setDate(request.getDate());
         slot.setStartTime(request.getStartTime());
         slot.setEndTime(request.getEndTime());
@@ -54,13 +54,13 @@ public class AvailableSlotService {
             throw new IllegalArgumentException("O intervalo entre horários deve ser positivo.");
         }
 
-        PetShop petShop = petShopRepository.findById(request.getPetShopId())
-                .orElseThrow(() -> new ResourceNotFoundException("PetShop não encontrado"));
+        PetShopServices service = petShopServicesRepository.findById(request.getServiceId())
+                .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado."));
         List<AvailableSlot> slots = new ArrayList<>();
 
         for (LocalTime time = request.getStartTime(); time.isBefore(request.getEndTime()); time = time.plusMinutes(request.getIntervalMinutes())) {
             AvailableSlot slot = new AvailableSlot();
-            slot.setPetShop(petShop);
+            slot.setPetShopService(service);
             slot.setDate(request.getDate());
             slot.setStartTime(time);
             slot.setEndTime(time.plusMinutes(request.getIntervalMinutes()));
@@ -68,11 +68,13 @@ public class AvailableSlotService {
             slots.add(slot);
         }
         return availableSlotRepository.saveAll(slots)
-                .stream().map(AvailableSlotMapper::toResponse).toList();
+                .stream()
+                .map(AvailableSlotMapper::toResponse)
+                .toList();
     }
 
     public List<AvailableSlotResponse> getAvailableSlots(Long petShopId, LocalDate targetDate) {
-        return availableSlotRepository.findByPetShopIdAndDateAndBookedFalse(petShopId, targetDate)
+        return availableSlotRepository.findByPetShopServiceIdAndDateAndBookedFalse(petShopId, targetDate)
                 .stream()
                 .map(AvailableSlotMapper::toResponse)
                 .toList();

@@ -14,5 +14,5 @@ public class AvailableSlotResponse {
     private LocalTime startTime;
     private LocalTime endTime;
     private boolean booked;
-    private Long petShopId;
+    private Long petShopServiceId;
 }

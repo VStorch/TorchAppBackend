@@ -7,5 +7,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface AvailableSlotRepository extends JpaRepository<AvailableSlot, Long> {
-    List<AvailableSlot> findByPetShopIdAndDateAndBookedFalse(Long petShopId, LocalDate date);
+    List<AvailableSlot> findByPetShopServiceIdAndDateAndBookedFalse(Long petShopServiceId, LocalDate date);
 }

@@ -12,7 +12,7 @@ public class AvailableSlotMapper {
                 slot.getStartTime(),
                 slot.getEndTime(),
                 slot.isBooked(),
-                slot.getPetShop().getId()
+                slot.getPetShopService().getId()
         );
     }
 }

@@ -11,8 +11,8 @@ import java.time.LocalTime;
 @Setter
 public class AvailableSlotRequest {
 
-    @NotNull(message = "Id do PetShop é um campo obrigatório.")
-    private Long petShopId;
+    @NotNull(message = "Id do serviço é um campo obrigatório.")
+    private Long serviceId;
 
     @NotNull(message = "Data é um campo obrigatório.")
     private LocalDate date;

@@ -37,10 +37,10 @@ public class AvailableSlotController {
 
     @GetMapping
     public ResponseEntity<List<AvailableSlotResponse>> getAvailableSlots(
-            @RequestParam Long petShopId,
+            @RequestParam Long serviceId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate targetDate
     ) {
-        return ResponseEntity.ok(availableSlotService.getAvailableSlots(petShopId, targetDate));
+        return ResponseEntity.ok(availableSlotService.getAvailableSlots(serviceId, targetDate));
     }
 
     @DeleteMapping("{id}")
