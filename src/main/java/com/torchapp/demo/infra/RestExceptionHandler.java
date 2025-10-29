@@ -30,6 +30,19 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
 
+    @ExceptionHandler(PasswordResetException.class)
+    private ResponseEntity<RestErrorMessage> handlePasswordResetError(
+            PasswordResetException e,
+            HttpServletRequest request
+    ) {
+        RestErrorMessage errorMessage = new RestErrorMessage(
+                HttpStatus.BAD_REQUEST,
+                e.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+    }
+
     @ExceptionHandler(VerificationCodeExpiredException.class)
     private ResponseEntity<RestErrorMessage> handleCodeExpired(
             VerificationCodeExpiredException e,

@@ -30,7 +30,7 @@ public class PetShopService {
     @Transactional
     public Optional<PetShop> registerPetShop(PetShopRegistrationRequest request) {
         User owner = userRepository.findById(request.getOwnerId())
-                .orElseThrow(() -> new ResourceNotFoundException());
+                .orElseThrow(() -> new ResourceNotFoundException("Dono de PetShop não encontrado."));
 
         if (!owner.getRole().name().equals("PETSHOP_OWNER")) {
             throw new RuntimeException("Usuário não é um dono de PetShop válido.");

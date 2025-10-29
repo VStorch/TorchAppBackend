@@ -1,17 +1,12 @@
 package com.torchapp.demo.controllers;
 
-import com.torchapp.demo.dtos.ErrorResponse;
 import com.torchapp.demo.dtos.petshop.PetShopRegistrationRequest;
 import com.torchapp.demo.dtos.petshop.PetShopResponse;
 import com.torchapp.demo.dtos.petshop.PetShopUpdateRequest;
-import com.torchapp.demo.dtos.LoginRequest;
 import com.torchapp.demo.mappers.PetShopMapper;
 import com.torchapp.demo.models.PetShop;
-import com.torchapp.demo.services.EmailService;
 import com.torchapp.demo.services.PetShopService;
-import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +17,9 @@ import java.util.List;
 public class PetShopController {
 
     private final PetShopService petShopService;
-    private final EmailService emailService;
 
-    public PetShopController(PetShopService petShopService, EmailService emailService) {
+    public PetShopController(PetShopService petShopService) {
         this.petShopService = petShopService;
-        this.emailService = emailService;
     }
 
     @PostMapping

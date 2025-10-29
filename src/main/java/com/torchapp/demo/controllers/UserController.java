@@ -1,8 +1,8 @@
 package com.torchapp.demo.controllers;
 
-import com.torchapp.demo.dtos.ErrorResponse;
 import com.torchapp.demo.dtos.LoginRequest;
 import com.torchapp.demo.dtos.user.*;
+import com.torchapp.demo.exceptions.BadRequestException;
 import com.torchapp.demo.mappers.UserMapper;
 import com.torchapp.demo.models.User;
 import com.torchapp.demo.services.EmailService;
@@ -89,7 +89,7 @@ public class UserController {
                 .<ResponseEntity<?>>map(user -> ResponseEntity.ok(
                         UserMapper.toResponse(user)
                 ))
-                .orElse(ResponseEntity.status(401).body(new ErrorResponse("Credenciais inválidas")));
+                .orElseThrow(() -> new BadRequestException("Credenciais inválidas."));
     }
 
     // Endpoint para verificar se email já existe
@@ -115,12 +115,7 @@ public class UserController {
     // Endpoint para confirmar reset
     @PostMapping("/reset-password/confirm")
     public ResponseEntity<?> confirmPasswordReset(@Valid @RequestBody PasswordResetConfirmRequest request) {
-        try {
             userService.resetPassword(request.getToken(), request.getNewPassword());
             return ResponseEntity.ok("Senha redefinida com sucesso.");
-        }
-        catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
     }
 }

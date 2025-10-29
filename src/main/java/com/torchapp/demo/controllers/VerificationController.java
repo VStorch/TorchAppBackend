@@ -2,7 +2,6 @@ package com.torchapp.demo.controllers;
 
 import com.torchapp.demo.dtos.user.verificationCodeForPetShopOwner.checkVerificationCodeRequest;
 import com.torchapp.demo.dtos.user.verificationCodeForPetShopOwner.sendVerificationCodeRequest;
-import com.torchapp.demo.services.PetShopService;
 import com.torchapp.demo.services.VerificationCodeService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

@@ -68,7 +68,6 @@ public class AppointmentService {
         appointment.setService(service);
         appointment.setSlot(slot);
 
-        //availableSlotRepository.save(slot);
         Appointment saved = appointmentRepository.save(appointment);
         return AppointmentMapper.toResponse(saved);
     }

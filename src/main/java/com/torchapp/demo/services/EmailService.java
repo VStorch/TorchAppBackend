@@ -4,7 +4,6 @@ import com.torchapp.demo.exceptions.EmailSendException;
 import com.torchapp.demo.models.User;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.env.Environment;
