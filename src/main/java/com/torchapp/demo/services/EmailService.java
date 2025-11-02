@@ -27,9 +27,9 @@ public class EmailService {
     private final TemplateEngine htmlTemplateEngine;
 
     public EmailService(Environment environment, JavaMailSender mailSender, TemplateEngine htmlTemplateEngine) {
-    this.environment = environment;
-    this.mailSender = mailSender;
-    this.htmlTemplateEngine = htmlTemplateEngine;
+        this.environment = environment;
+        this.mailSender = mailSender;
+        this.htmlTemplateEngine = htmlTemplateEngine;
     }
 
     @Async
@@ -68,7 +68,7 @@ public class EmailService {
     }
 
     @Async
-    public void sendRedirectMail (User user) {
+    public void sendRedirectMail(User user) {
         try {
             String mailFrom = getMailFrom();
             String mailFromName = getMailFromName();
@@ -77,7 +77,7 @@ public class EmailService {
             final MimeMessageHelper email = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
             email.setTo(user.getEmail());
-            email.setSubject("Recuperação de Senha");
+            email.setSubject("Recuperação de Senha - Torch");
             email.setFrom(new InternetAddress(mailFrom, mailFromName));
 
             final Context ctx = createContext();
@@ -132,7 +132,7 @@ public class EmailService {
     }
 
     private String getMailFromName() {
-        return environment.getProperty("mail.from.name", "Identity");
+        return environment.getProperty("mail.from.name", "Identity"); // String mailFromName = "TORCH 🔥";
     }
 
     private Context createContext() {
