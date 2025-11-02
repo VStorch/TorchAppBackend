@@ -19,7 +19,7 @@ import org.thymeleaf.context.Context;
 @Service
 public class EmailService {
 
-    private static final String TORCH_LOGO_IMAGE = "templates/images/torch.png";
+    private static final String TORCH_LOGO_IMAGE = "images/torch.png";
     private static final String PNG_MIME = "image/png";
 
     private final Environment environment;
@@ -132,7 +132,7 @@ public class EmailService {
     }
 
     private String getMailFromName() {
-        return environment.getProperty("mail.from.name", "Identity"); // String mailFromName = "TORCH 🔥";
+        return environment.getProperty("mail.from.name", "Identity");
     }
 
     private Context createContext() {
