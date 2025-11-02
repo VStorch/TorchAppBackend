@@ -44,9 +44,6 @@ public class PetShop {
     private List<PetShopServices> services = new ArrayList<>();
 
     @OneToMany(mappedBy = "petShop", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EvaluateUser> evaluationsMade = new ArrayList<>();
-
-    @OneToMany(mappedBy = "petShop", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EvaluatePetShop> evaluations = new ArrayList<>();
 
     @OneToMany(mappedBy = "petShop", cascade = CascadeType.ALL, orphanRemoval = true)
