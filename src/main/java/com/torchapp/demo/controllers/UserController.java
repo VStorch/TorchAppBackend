@@ -4,7 +4,9 @@ import com.torchapp.demo.dtos.LoginRequest;
 import com.torchapp.demo.dtos.user.*;
 import com.torchapp.demo.exceptions.BadRequestException;
 import com.torchapp.demo.mappers.UserMapper;
+import com.torchapp.demo.models.PetShop;
 import com.torchapp.demo.models.User;
+import com.torchapp.demo.repositories.PetShopRepository;
 import com.torchapp.demo.services.EmailService;
 import com.torchapp.demo.services.UserService;
 import com.torchapp.demo.services.VerificationCodeService;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -21,13 +24,18 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    private EmailService emailService;
-    private VerificationCodeService verificationCodeService;
+    private final EmailService emailService;
+    private final VerificationCodeService verificationCodeService;
+    private final PetShopRepository petShopRepository;
 
-    public UserController(UserService userService, EmailService emailService, VerificationCodeService verificationCodeService) {
+    public UserController(UserService userService,
+                          EmailService emailService,
+                          VerificationCodeService verificationCodeService,
+                          PetShopRepository petShopRepository) {
         this.userService = userService;
         this.emailService = emailService;
         this.verificationCodeService = verificationCodeService;
+        this.petShopRepository = petShopRepository;
     }
 
     // Endpoint para criar um usuário
@@ -47,7 +55,28 @@ public class UserController {
     public ResponseEntity<?> registerOwner(@Valid @RequestBody OwnerRegistrationRequest request) {
         User user = UserMapper.toEntityOwner(request);
         Optional<User> saved = userService.registerPetShopOwner(user, verificationCodeService);
-        return ResponseEntity.status(201).body("Dono de PetShop cadastrado com sucesso.");
+
+        return saved.map(savedUser ->
+                ResponseEntity.status(201).body(Map.of(
+                        "id", savedUser.getId(),
+                        "message", "Dono de PetShop cadastrado com sucesso."
+                ))
+        ).orElse(
+                ResponseEntity.status(400).body(Map.of(
+                        "error", "Erro ao cadastrar dono de PetShop"
+                ))
+        );
+    }
+
+    @GetMapping("/owner/{ownerId}")
+    public ResponseEntity<?> getPetShopByOwnerId(@PathVariable Long ownerId) {
+        Optional<PetShop> petShop = petShopRepository.findByOwnerId(ownerId);
+
+        if (petShop.isPresent()) {
+            return ResponseEntity.ok(petShop.get());
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     // Endpoint para listar todos os usuários
@@ -115,7 +144,8 @@ public class UserController {
     // Endpoint para confirmar reset
     @PostMapping("/reset-password/confirm")
     public ResponseEntity<?> confirmPasswordReset(@Valid @RequestBody PasswordResetConfirmRequest request) {
-            userService.resetPassword(request.getToken(), request.getNewPassword());
-            return ResponseEntity.ok("Senha redefinida com sucesso.");
+        userService.resetPassword(request.getToken(), request.getNewPassword());
+        return ResponseEntity.ok("Senha redefinida com sucesso.");
     }
 }
+

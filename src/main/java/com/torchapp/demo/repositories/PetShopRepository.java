@@ -7,4 +7,9 @@ import java.util.Optional;
 
 public interface PetShopRepository extends JpaRepository<PetShop, Long> {
     Optional<PetShop> findByEmail(String email);
+    Optional<PetShop> findByOwnerId(Long ownerId);
+
 }
+
+
+
