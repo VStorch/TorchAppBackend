@@ -35,6 +35,7 @@ public class AvailableSlotService {
 
         AvailableSlot slot = new AvailableSlot();
         slot.setPetShopService(service);
+        slot.setPetShop(service.getPetShop()); // ADICIONE ESTA LINHA
         slot.setDate(request.getDate());
         slot.setStartTime(request.getStartTime());
         slot.setEndTime(request.getEndTime());
@@ -61,6 +62,7 @@ public class AvailableSlotService {
         for (LocalTime time = request.getStartTime(); time.isBefore(request.getEndTime()); time = time.plusMinutes(request.getIntervalMinutes())) {
             AvailableSlot slot = new AvailableSlot();
             slot.setPetShopService(service);
+            slot.setPetShop(service.getPetShop()); // ADICIONE ESTA LINHA
             slot.setDate(request.getDate());
             slot.setStartTime(time);
             slot.setEndTime(time.plusMinutes(request.getIntervalMinutes()));

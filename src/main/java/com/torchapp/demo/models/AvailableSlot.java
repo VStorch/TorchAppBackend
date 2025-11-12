@@ -24,4 +24,8 @@ public class AvailableSlot {
     @JoinColumn(name = "petshop_service_id", nullable = false)
     private PetShopServices petShopService;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "petshop_id", nullable = false)
+    private PetShop petShop;
+
 }

@@ -2,8 +2,10 @@ package com.torchapp.demo.controllers;
 
 import com.torchapp.demo.dtos.LoginRequest;
 import com.torchapp.demo.dtos.user.*;
+import com.torchapp.demo.dtos.petshop.PetShopResponse;
 import com.torchapp.demo.exceptions.BadRequestException;
 import com.torchapp.demo.mappers.UserMapper;
+import com.torchapp.demo.mappers.PetShopMapper;
 import com.torchapp.demo.models.PetShop;
 import com.torchapp.demo.models.User;
 import com.torchapp.demo.repositories.PetShopRepository;
@@ -68,15 +70,12 @@ public class UserController {
         );
     }
 
+    // ✅ CORRIGIDO - Agora retorna DTO em vez da entidade
     @GetMapping("/owner/{ownerId}")
-    public ResponseEntity<?> getPetShopByOwnerId(@PathVariable Long ownerId) {
-        Optional<PetShop> petShop = petShopRepository.findByOwnerId(ownerId);
-
-        if (petShop.isPresent()) {
-            return ResponseEntity.ok(petShop.get());
-        }
-
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<PetShopResponse> getPetShopByOwnerId(@PathVariable Long ownerId) {
+        return petShopRepository.findByOwnerId(ownerId)
+                .map(petShop -> ResponseEntity.ok(PetShopMapper.toResponse(petShop)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     // Endpoint para listar todos os usuários
@@ -148,4 +147,3 @@ public class UserController {
         return ResponseEntity.ok("Senha redefinida com sucesso.");
     }
 }
-
