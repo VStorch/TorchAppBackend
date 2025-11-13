@@ -28,4 +28,7 @@ public class PetShopServices {
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Appointment> appointments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "petShopService", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AvailableSlot> availableSlots = new ArrayList<>();
+
 }
