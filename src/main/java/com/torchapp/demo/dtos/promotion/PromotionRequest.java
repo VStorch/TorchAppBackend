@@ -1,4 +1,4 @@
-package com.torchapp.demo.dtos.petshop;
+package com.torchapp.demo.dtos.promotion;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-// Request DTO
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,17 +20,4 @@ public class PromotionRequest {
 
     @NotNull(message = "Validade é obrigatória")
     private LocalDate validity;
-}
-
-// Response DTO
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class PromotionResponse {
-    private Long id;
-    private String name;
-    private String description;
-    private LocalDate validity;
-    private LocalDate createdAt;
-    private LocalDate updatedAt;
 }

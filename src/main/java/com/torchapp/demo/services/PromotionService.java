@@ -1,7 +1,7 @@
 package com.torchapp.demo.services;
 
 
-import com.torchapp.demo.dtos.petshop.PromotionRequest;
+import com.torchapp.demo.dtos.promotion.PromotionRequest;
 import com.torchapp.demo.models.Promotion;
 import com.torchapp.demo.repositories.PromotionRepository;
 import lombok.RequiredArgsConstructor;
