@@ -1,7 +1,8 @@
 package com.torchapp.demo.models;
 
 import com.torchapp.demo.enums.AppointmentStatus;
-import jakarta.persistence.*;import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -25,23 +26,23 @@ public class Appointment {
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status = AppointmentStatus.PENDING;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER) // ← MUDOU AQUI
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER) // ← MUDOU AQUI
     @JoinColumn(name = "pet_id", nullable = false)
     private Pet pet;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER) // ← MUDOU AQUI
     @JoinColumn(name = "petshop_id", nullable = false)
     private PetShop petShop;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER) // ← MUDOU AQUI
     @JoinColumn(name = "service_id", nullable = false)
     private PetShopServices service;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER) // ← MUDOU AQUI
     @JoinColumn(name = "slot_id", nullable = false)
     private AvailableSlot slot;
 }

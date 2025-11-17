@@ -8,10 +8,13 @@ import com.torchapp.demo.exceptions.ResourceNotFoundException;
 import com.torchapp.demo.mappers.AppointmentMapper;
 import com.torchapp.demo.models.*;
 import com.torchapp.demo.repositories.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -52,6 +55,19 @@ public class AppointmentService {
         if (!pet.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("Pet não pertence a este Usuário.");
         }
+
+        // NOVA VALIDAÇÃO: Verificar se já existe agendamento PENDING para este slot
+        Optional<Appointment> existingAppointment = appointmentRepository
+                .findBySlotIdAndStatus(request.getSlotId(), AppointmentStatus.PENDING);
+
+        if (existingAppointment.isPresent()) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Este horário já está agendado. Por favor, escolha outro horário."
+            );
+        }
+
+        // Verificação adicional do slot (mantém a validação antiga)
         if (slot.isBooked()) {
             throw new IllegalStateException("Esse horário já foi reservado.");
         }
