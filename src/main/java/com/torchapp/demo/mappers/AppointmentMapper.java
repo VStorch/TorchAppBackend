@@ -10,7 +10,7 @@ public class AppointmentMapper {
         response.setId(appointment.getId());
         response.setDate(appointment.getDate());
         response.setTime(appointment.getTime());
-        response.setStatus(appointment.getStatus()); // Changed this line
+        response.setStatus(appointment.getStatus());
 
         // IDs
         response.setUserId(appointment.getUser().getId());
@@ -19,10 +19,20 @@ public class AppointmentMapper {
         response.setServiceId(appointment.getService().getId());
         response.setSlotId(appointment.getSlot() != null ? appointment.getSlot().getId() : null);
 
-        // ADICIONAR OS NOMES - ISSO ESTAVA FALTANDO!
+        // NOMES
         response.setServiceName(appointment.getService().getName());
         response.setPetShopName(appointment.getPetShop().getName());
         response.setPetName(appointment.getPet().getName());
+        response.setUserName(appointment.getUser().getName()); // ADICIONAR
+
+        // PREÇO DO SERVIÇO
+        response.setServicePrice(appointment.getService().getPrice()); // ADICIONAR
+
+        // HORÁRIOS DO SLOT
+        if (appointment.getSlot() != null) {
+            response.setSlotStartTime(appointment.getSlot().getStartTime()); // ADICIONAR
+            response.setSlotEndTime(appointment.getSlot().getEndTime()); // ADICIONAR
+        }
 
         return response;
     }

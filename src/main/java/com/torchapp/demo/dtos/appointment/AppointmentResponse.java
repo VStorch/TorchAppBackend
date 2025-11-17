@@ -5,6 +5,7 @@ import com.torchapp.demo.enums.AppointmentStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -30,4 +31,15 @@ public class AppointmentResponse {
     private String serviceName;
     private String petShopName;
     private String petName;
+    private String userName;
+
+    // PREÇO
+    private BigDecimal servicePrice; // MUDOU AQUI: Double -> BigDecimal
+
+    // HORÁRIOS DO SLOT
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime slotStartTime;
+
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime slotEndTime;
 }

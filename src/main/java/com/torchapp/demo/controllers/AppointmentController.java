@@ -49,6 +49,12 @@ public class AppointmentController {
     @PutMapping("/{id}/complete")
     public ResponseEntity<Void> completeAppointment(@PathVariable Long id) {
         appointmentService.completeAppointment(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}/confirm")
+    public ResponseEntity<Void> confirmAppointment(@PathVariable Long id) {
+        appointmentService.confirmAppointment(id);
+        return ResponseEntity.ok().build();
     }
 }

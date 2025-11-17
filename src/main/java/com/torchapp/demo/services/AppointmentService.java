@@ -56,7 +56,6 @@ public class AppointmentService {
             throw new IllegalArgumentException("Pet não pertence a este Usuário.");
         }
 
-        // NOVA VALIDAÇÃO: Verificar se já existe agendamento PENDING para este slot
         Optional<Appointment> existingAppointment = appointmentRepository
                 .findBySlotIdAndStatus(request.getSlotId(), AppointmentStatus.PENDING);
 
@@ -67,7 +66,6 @@ public class AppointmentService {
             );
         }
 
-        // Verificação adicional do slot (mantém a validação antiga)
         if (slot.isBooked()) {
             throw new IllegalStateException("Esse horário já foi reservado.");
         }
@@ -135,6 +133,25 @@ public class AppointmentService {
         }
 
         appointment.setStatus(AppointmentStatus.COMPLETED);
+        appointmentRepository.save(appointment);
+    }
+
+    @Transactional
+    public void confirmAppointment(Long id) {
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado."));
+
+        if (appointment.getStatus() == AppointmentStatus.CANCELLED) {
+            throw new BadRequestException("Não é possível confirmar um agendamento cancelado.");
+        }
+        if (appointment.getStatus() == AppointmentStatus.COMPLETED) {
+            throw new BadRequestException("Este agendamento já foi concluído");
+        }
+        if (appointment.getStatus() == AppointmentStatus.CONFIRMED) {
+            throw new BadRequestException("Este agendamento já está confirmado");
+        }
+
+        appointment.setStatus(AppointmentStatus.CONFIRMED);
         appointmentRepository.save(appointment);
     }
 }
