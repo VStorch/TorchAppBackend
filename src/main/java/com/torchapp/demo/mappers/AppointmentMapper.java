@@ -23,16 +23,22 @@ public class AppointmentMapper {
         response.setServiceName(appointment.getService().getName());
         response.setPetShopName(appointment.getPetShop().getName());
         response.setPetName(appointment.getPet().getName());
-        response.setUserName(appointment.getUser().getName()); // ADICIONAR
+        response.setUserName(appointment.getUser().getName());
 
         // PREÇO DO SERVIÇO
-        response.setServicePrice(appointment.getService().getPrice()); // ADICIONAR
+        response.setServicePrice(appointment.getService().getPrice());
 
         // HORÁRIOS DO SLOT
         if (appointment.getSlot() != null) {
-            response.setSlotStartTime(appointment.getSlot().getStartTime()); // ADICIONAR
-            response.setSlotEndTime(appointment.getSlot().getEndTime()); // ADICIONAR
+            response.setSlotStartTime(appointment.getSlot().getStartTime());
+            response.setSlotEndTime(appointment.getSlot().getEndTime());
         }
+
+        // ========== CAMPOS DE CUPOM ==========
+        response.setCouponCode(appointment.getCouponCode());
+        response.setDiscountPercent(appointment.getDiscountPercent());
+        response.setFinalPrice(appointment.getFinalPrice());
+        // =====================================
 
         return response;
     }

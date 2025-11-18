@@ -31,6 +31,17 @@ public class Promotion {
     @Column(nullable = false)
     private LocalDate validity;
 
+    @Column(unique = true, length = 20, name = "coupon_code")
+    private String couponCode;
+
+    @Column(name = "discount_percent")
+    private Double discountPercent;
+
+    // ========== NOVO CAMPO ==========
+    @Column(name = "pet_shop_id")
+    private Long petShopId;  // ← ADICIONAR ESTE CAMPO
+    // ================================
+
     @Column(name = "created_at", updatable = false)
     private LocalDate createdAt;
 
@@ -46,5 +57,16 @@ public class Promotion {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDate.now();
+    }
+
+    public Double calculateDiscount(Double originalPrice) {
+        if (discountPercent == null || discountPercent <= 0 || originalPrice == null) {
+            return originalPrice;
+        }
+        return originalPrice * (1 - (discountPercent / 100));
+    }
+
+    public boolean isValid() {
+        return !LocalDate.now().isAfter(validity);
     }
 }

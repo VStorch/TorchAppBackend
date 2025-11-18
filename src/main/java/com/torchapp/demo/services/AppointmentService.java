@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,14 +27,23 @@ public class AppointmentService {
     private final PetShopRepository petShopRepository;
     private final PetShopServicesRepository petShopServicesRepository;
     private final AvailableSlotRepository availableSlotRepository;
+    private final PromotionRepository promotionRepository;
 
-    public AppointmentService(AppointmentRepository appointmentRepository, UserRepository userRepository, PetRepository petRepository, PetShopRepository petShopRepository, PetShopServicesRepository petShopServicesRepository, AvailableSlotRepository availableSlotRepository) {
+    public AppointmentService(
+            AppointmentRepository appointmentRepository,
+            UserRepository userRepository,
+            PetRepository petRepository,
+            PetShopRepository petShopRepository,
+            PetShopServicesRepository petShopServicesRepository,
+            AvailableSlotRepository availableSlotRepository,
+            PromotionRepository promotionRepository) {
         this.appointmentRepository = appointmentRepository;
         this.userRepository = userRepository;
         this.petRepository = petRepository;
         this.petShopRepository = petShopRepository;
         this.petShopServicesRepository = petShopServicesRepository;
         this.availableSlotRepository = availableSlotRepository;
+        this.promotionRepository = promotionRepository;
     }
 
     @Transactional
@@ -70,6 +80,55 @@ public class AppointmentService {
             throw new IllegalStateException("Esse horário já foi reservado.");
         }
 
+        // ========== PROCESSAMENTO DO CUPOM DE DESCONTO ==========
+        String couponCode = null;
+        BigDecimal discountPercent = null;
+        BigDecimal finalPrice = service.getPrice();
+
+        if (request.getCouponCode() != null && !request.getCouponCode().trim().isEmpty()) {
+            String inputCoupon = request.getCouponCode().trim().toUpperCase();
+
+            System.out.println("🎟️ Processando cupom: " + inputCoupon);
+
+            Optional<Promotion> promotionOpt = promotionRepository.findByCouponCode(inputCoupon);
+
+            if (promotionOpt.isEmpty()) {
+                throw new BadRequestException("Cupom não encontrado: " + inputCoupon);
+            }
+
+            Promotion promotion = promotionOpt.get();
+
+            // Validar se o cupom ainda é válido
+            if (!promotion.isValid()) {
+                throw new BadRequestException("Este cupom expirou em " + promotion.getValidity());
+            }
+
+            // Validar se o cupom pertence ao pet shop correto (se especificado)
+            if (promotion.getPetShopId() != null) {
+                if (!promotion.getPetShopId().equals(request.getPetShopId())) {
+                    throw new BadRequestException("Este cupom não é válido para este pet shop");
+                }
+            } else {
+                // Se a promoção não tem petShopId definido, rejeitar
+                throw new BadRequestException("Este cupom não está vinculado a nenhum pet shop");
+            }
+
+            // Aplicar desconto
+            couponCode = promotion.getCouponCode();
+            discountPercent = BigDecimal.valueOf(promotion.getDiscountPercent());
+
+            // Converter Double para BigDecimal corretamente
+            Double discountedValue = promotion.calculateDiscount(service.getPrice().doubleValue());
+            finalPrice = BigDecimal.valueOf(discountedValue);
+
+            System.out.println("✅ CUPOM APLICADO COM SUCESSO:");
+            System.out.println("   Código: " + couponCode);
+            System.out.println("   Desconto: " + discountPercent + "%");
+            System.out.println("   Preço Original: R$ " + service.getPrice());
+            System.out.println("   Preço Final: R$ " + finalPrice);
+        }
+        // =======================================================
+
         slot.setBooked(true);
 
         Appointment appointment = new Appointment();
@@ -82,7 +141,22 @@ public class AppointmentService {
         appointment.setService(service);
         appointment.setSlot(slot);
 
+        // ========== ADICIONAR DADOS DO CUPOM ==========
+        appointment.setCouponCode(couponCode);
+        appointment.setDiscountPercent(discountPercent);
+        appointment.setFinalPrice(finalPrice);
+        // ==============================================
+
         Appointment saved = appointmentRepository.save(appointment);
+
+        System.out.println("✅ AGENDAMENTO CRIADO:");
+        System.out.println("   ID: " + saved.getId());
+        System.out.println("   Serviço: " + saved.getService().getName());
+        System.out.println("   Preço Original: R$ " + saved.getService().getPrice());
+        System.out.println("   Cupom: " + saved.getCouponCode());
+        System.out.println("   Desconto: " + saved.getDiscountPercent() + "%");
+        System.out.println("   Preço Final: R$ " + saved.getFinalPrice());
+
         return AppointmentMapper.toResponse(saved);
     }
 

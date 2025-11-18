@@ -34,7 +34,7 @@ public class AppointmentResponse {
     private String userName;
 
     // PREÇO
-    private BigDecimal servicePrice; // MUDOU AQUI: Double -> BigDecimal
+    private BigDecimal servicePrice;
 
     // HORÁRIOS DO SLOT
     @JsonFormat(pattern = "HH:mm")
@@ -42,4 +42,10 @@ public class AppointmentResponse {
 
     @JsonFormat(pattern = "HH:mm")
     private LocalTime slotEndTime;
+
+    // ========== CAMPOS DE CUPOM ==========
+    private String couponCode;
+    private BigDecimal discountPercent;
+    private BigDecimal finalPrice;
+    // =====================================
 }
