@@ -4,6 +4,7 @@ import com.torchapp.demo.dtos.user.OwnerUpdateRequest;
 import com.torchapp.demo.dtos.user.UserResponse;
 import com.torchapp.demo.dtos.user.UserUpdateRequest;
 import com.torchapp.demo.enums.Role;
+import com.torchapp.demo.exceptions.BadRequestException;
 import com.torchapp.demo.exceptions.PasswordResetException;
 import com.torchapp.demo.exceptions.ResourceNotFoundException;
 import com.torchapp.demo.mappers.UserMapper;
@@ -124,14 +125,13 @@ public class UserService {
     }
 
     @Transactional
-    public void resetPassword(String token, String newPassword) {
-        Optional<User> userOpt = userRepository.findByResetToken(token);
+    public void resetPassword(String email, String token, String newPassword) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BadRequestException("Email inválido."));
 
-        if (userOpt.isEmpty()) {
-            throw new PasswordResetException("Token de redefinição inválido.");
+        if (!token.equals(user.getResetToken())) {
+            throw new BadRequestException("Token inválido ou expirado.");
         }
-
-        User user = userOpt.get();
 
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setResetToken(null);

@@ -70,7 +70,6 @@ public class UserController {
         );
     }
 
-    // ✅ CORRIGIDO - Agora retorna DTO em vez da entidade
     @GetMapping("/owner/{ownerId}")
     public ResponseEntity<PetShopResponse> getPetShopByOwnerId(@PathVariable Long ownerId) {
         return petShopRepository.findByOwnerId(ownerId)
@@ -143,7 +142,11 @@ public class UserController {
     // Endpoint para confirmar reset
     @PostMapping("/reset-password/confirm")
     public ResponseEntity<?> confirmPasswordReset(@Valid @RequestBody PasswordResetConfirmRequest request) {
-        userService.resetPassword(request.getToken(), request.getNewPassword());
+        userService.resetPassword(
+                request.getEmail(),
+                request.getToken(),
+                request.getNewPassword()
+        );
         return ResponseEntity.ok("Senha redefinida com sucesso.");
     }
 }
