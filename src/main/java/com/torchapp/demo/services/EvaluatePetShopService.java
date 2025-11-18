@@ -26,7 +26,11 @@ public class EvaluatePetShopService {
     private final PetShopRepository petShopRepository;
     private final UserRepository userRepository;
 
-    public EvaluatePetShopService(EvaluatePetShopRepository evaluateRepository, AppointmentRepository appointmentRepository, PetShopRepository petShopRepository, UserRepository userRepository) {
+    public EvaluatePetShopService(
+            EvaluatePetShopRepository evaluateRepository,
+            AppointmentRepository appointmentRepository,
+            PetShopRepository petShopRepository,
+            UserRepository userRepository) {
         this.evaluateRepository = evaluateRepository;
         this.appointmentRepository = appointmentRepository;
         this.petShopRepository = petShopRepository;
@@ -45,6 +49,7 @@ public class EvaluatePetShopService {
                     throw new BadRequestException("Usuário já avaliou este PetShop.");
                 });
 
+        // ✅ CORRIGIDO: Agora usa a query JPQL do repositório
         boolean hasCompletedAppointment = appointmentRepository.existsByUserIdAndPetShopIdAndStatus(
                 user.getId(),
                 petShop.getId(),

@@ -14,4 +14,6 @@ public class EvaluatePetShopResponse {
     private LocalDate date;
     private String petShopName;
     private Long petShopId;
+    private String userName;  // ← ADICIONADO
+    private Long userId;      // ← ADICIONADO
 }
