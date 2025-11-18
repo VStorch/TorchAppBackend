@@ -25,6 +25,11 @@ public class EvaluatePetShopMapper {
         response.setDate(evaluate.getDate());
         response.setPetShopId(evaluate.getPetShop().getId());
         response.setPetShopName(evaluate.getPetShop().getName());
+
+        // ← ADICIONADO: Nome do usuário que avaliou
+        response.setUserName(evaluate.getUser().getName());
+        response.setUserId(evaluate.getUser().getId());
+
         return response;
     }
 }
