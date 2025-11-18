@@ -84,8 +84,8 @@ public class EmailService {
             ctx.setVariable("email", user.getEmail());
             ctx.setVariable("name", user.getName());
 
-            String resetUrl = "torchapp://reset-password?token=" + user.getResetToken(); // Deep Link
-            String fallbackUrl = "https://vstorch.github.io/PaginaRedirecionamento?token=" + user.getResetToken();
+            String resetUrl = "torchapp://reset-password?token=" + user.getResetToken() + "&email=" + user.getEmail(); // Deep Link
+            String fallbackUrl = "https://vstorch.github.io/PaginaRedirecionamento?token=" + user.getResetToken() + "&email=" + user.getEmail();
 
             ctx.setVariable("resetUrl", resetUrl);
             ctx.setVariable("fallbackUrl", fallbackUrl);

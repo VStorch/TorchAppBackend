@@ -8,6 +8,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PasswordResetConfirmRequest {
+
+    @NotBlank(message = "Email é um campo obrigatório")
+    private String email;
+
     @NotBlank(message = "Toke é um campo obrigatório")
     private String token;
 
