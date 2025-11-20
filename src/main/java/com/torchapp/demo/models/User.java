@@ -58,4 +58,7 @@ public class User {
 
     @Column(nullable = false)
     private boolean emailVerifiedForPetShopOwner = false;
+
+    @Column(name = "profile_image")
+    private String profileImage;
 }

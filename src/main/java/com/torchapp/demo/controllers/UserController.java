@@ -6,7 +6,6 @@ import com.torchapp.demo.dtos.petshop.PetShopResponse;
 import com.torchapp.demo.exceptions.BadRequestException;
 import com.torchapp.demo.mappers.UserMapper;
 import com.torchapp.demo.mappers.PetShopMapper;
-import com.torchapp.demo.models.PetShop;
 import com.torchapp.demo.models.User;
 import com.torchapp.demo.repositories.PetShopRepository;
 import com.torchapp.demo.services.EmailService;
@@ -14,8 +13,10 @@ import com.torchapp.demo.services.UserService;
 import com.torchapp.demo.services.VerificationCodeService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -100,6 +101,16 @@ public class UserController {
     public ResponseEntity<OwnerResponse> updateOwner(@PathVariable Long id, @RequestBody OwnerUpdateRequest request) {
         User updateOwner = userService.updateOwner(id, request);
         return ResponseEntity.ok(UserMapper.toResponseOwner(updateOwner));
+    }
+
+    @PostMapping(value = "/{id}/upload-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<UserResponse> uploadProfileImage(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file
+    ) {
+
+        User updated = userService.updateProfileImage(id, file);
+        return ResponseEntity.ok(UserMapper.toResponse(updated));
     }
 
     // Endpoint para deletar um usuário

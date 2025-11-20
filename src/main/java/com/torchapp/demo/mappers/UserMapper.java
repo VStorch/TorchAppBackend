@@ -33,6 +33,7 @@ public class UserMapper {
                 .name(user.getName())
                 .surname(user.getSurname())
                 .email(user.getEmail())
+                .profileImage(user.getProfileImage())
                 .build();
     }
 
@@ -43,6 +44,7 @@ public class UserMapper {
                 .surname(user.getSurname())
                 .phone(user.getPhone())
                 .email(user.getEmail())
+                .profileImage(user.getProfileImage())
                 .build();
     }
 }

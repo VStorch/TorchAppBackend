@@ -13,7 +13,12 @@ import com.torchapp.demo.repositories.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -90,6 +95,29 @@ public class UserService {
 
             return userRepository.save(user);
         }).orElseThrow(ResourceNotFoundException::new);
+    }
+
+    @Transactional
+    public User updateProfileImage(Long id, MultipartFile file) {
+        User user = getUserById(id);
+
+        try {
+            if (file == null || file.isEmpty())
+                throw new BadRequestException("Nenhum arquivo enviado");
+
+            String uploadDir = "/app/uploads/users/";
+            String fileName = "user_" + id + "_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
+
+            Path destination = Path.of(uploadDir + fileName);
+
+            Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+
+            user.setProfileImage(fileName);
+
+            return userRepository.save(user);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao salvar a imagem.", e);
+        }
     }
 
     @Transactional
