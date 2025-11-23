@@ -22,10 +22,10 @@ services:
       SPRING_DATASOURCE_PASSWORD: root
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
 
-      MAIL_USERNAME: ""
-      MAIL_PASSWORD: ""
-      MAIL_FROM: ""
-      MAIL_FROM_NAME: "TorchApp"
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_FROM: ${MAIL_FROM}
+      MAIL_FROM_NAME: ${MAIL_FROM_NAME}
     volumes:
       - ./uploads/users:/app/uploads/users
     depends_on:
