@@ -28,17 +28,59 @@ Já a página de redirecionamento para a redefinição de senha está [aqui.](ht
 
 ### Descrição
 
+O Torch é um aplicativo móvel desenvolvido para facilitar o agendamento de horários em Pet Shops. Com uma interface intuitiva, o app permite que os usuários agendem rapidamente serviços para seus animais de estimação, enquanto os Pet Shops podem gerenciar seus horários de forma eficiente. O objetivo é proporcionar agilidade tanto para os clientes quanto para os fornecedores de serviços.
+
 ---
 
 ### Funcionalidades
+
+#### Tipos de Usuário
+
+O Torch possui dois perfis de uso, cada um com funcionalidades específicas:
+
+1. Cliente
+- Criação de conta e login
+- Cadastro de pets
+- Consulta de petshops, serviços e horários
+- Visualização de histórico e agendamentos futuros
+- Atualização de perfil
+- Recuperação e redefinição de senha via token
+
+2. Dono de PetShop
+- Cadastro do seu Pet Shop
+- Registro e edição de serviços
+- Geração de horários disponíveis (slots)
+- Acompanhamento de agendamentos
+- Atualização de informações do Pet Shop
+- Gerenciamento do próprio perfil
 
 ---
 
 ### Tecnologias e Dependências
 
-- **Java 21**
-- **Spring Boot** (Data JPA, Validation, Web, etc.)
-- **MySQL**
+**Base**
+- Java 21
+- Spring Boot 3.5.4
+- Maven
+
+**Módulos Spring utilizados**
+- spring-boot-starter-web
+- spring-boot-starter-data-jpa
+- spring-boot-starter-thymeleaf
+- spring-boot-starter-mail
+- spring-boot-starter-validation
+- spring-boot-starter-security
+
+**Bando de dados**
+- MySQL + Connector/J (runtime)
+
+**Auxiliares**
+- Lombok 1.18.32
+- IntelliJ Annotations 24.0.1
+- Spring Boot DevTools
+
+**Testes**
+- spring-boot-starter-test
 
 ---
 
