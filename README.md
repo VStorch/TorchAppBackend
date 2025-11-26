@@ -1,6 +1,16 @@
-# TorchApp - Backend 🐾
+<img src = "docs/imgs/torch_logo.png" alt = "Logo Torch" width = "350">
 
-Backend em Java Spring Boot para o TorchApp. O repositório do Frontend está disponível [aqui.](https://github.com/VStorch/TorchApp)
+---
+
+# Backend 🐾
+
+Aplicativo mobile desenvolvido em Flutter para o projeto Torch, focado no agendamento rápido e intuitivo de serviços em Pet Shops.<br>
+O frontend está disponível [aqui.](https://github.com/VStorch/TorchApp)<br>
+Já a página de redirecionamento para a redefinição de senha está [aqui.](https://github.com/VStorch/PaginaRedirecionamento)
+
+---
+
+### Índice
 
 ---
 
