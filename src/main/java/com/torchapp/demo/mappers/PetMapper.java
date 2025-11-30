@@ -26,7 +26,7 @@ public class PetMapper {
                 pet.getBreed(),
                 pet.getWeight(),
                 pet.getBirthDate(),
-                pet.getUser().getId()
+                pet.getUser() != null ? pet.getUser().getId() : null
         );
     }
 }
