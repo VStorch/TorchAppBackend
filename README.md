@@ -104,6 +104,40 @@ Para ele ser reconhecido pelo Spring Boot: Configure o aplication.properties com
 
 ### Estrutura de pastas
 
+```
+
+TorchAppBackend/
+├── .mvn/
+├── docs/
+│   └── imgs/
+├── src/
+│   └── main/
+│       └── java/
+│           └── com/
+│               └── torchapp/
+│                   └── demo/
+│                       ├── config/
+│                       ├── controllers/
+│                       ├── dtos/
+│                       ├── enums/
+│                       ├── exceptions/
+│                       ├── infra/
+│                       ├── mappers/
+│                       ├── models/
+│                       ├── repositories/
+│                       └── services/
+│       └── resources/
+
+```
+
+#### Pastas principais
+
+Abaixo está uma explicação sobre as principais pastas do projeto:
+
+- ``config/``: Contém as classes de configuração da aplicação.
+- ``controllers/``: Contém as classes responsáveis pelos endpoints REST da API, como os controladores para usuários, petshops, serviços, etc.
+- ``dtos/``:
+
 ---
 
 ### Modelos Principais
