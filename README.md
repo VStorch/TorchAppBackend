@@ -136,7 +136,18 @@ Abaixo está uma explicação sobre as principais pastas do projeto:
 
 - ``config/``: Contém as classes de configuração da aplicação.
 - ``controllers/``: Contém as classes responsáveis pelos endpoints REST da API, como os controladores para usuários, petshops, serviços, etc.
-- ``dtos/``:
+- ``dtos/``: Contém os objetos de transferência de dados (DTOs), usados para a comunicação entre as camadas da aplicação.
+- ``enums``: Contém as enumerações utilizadas na aplicação, no caso, os tipos de usuários e o status de agendamentos.
+- ``exceptions``: Contém as exceções personalizadas, usadas para tratamento de erros específicos da aplicação.
+- ``infra``: Contém classes relacionadas à infraestrutura e tratamento de exceções.
+- ``mappers``: Contém as classes de mapeamento de dados entre objetos, como entre DTOs e entidades JPA.
+- ``models``: Contém as entidades JPA, que representam as tabelas do banco de dados. Essas classes são mapeadas para o banco de dados com anotações do JPA.
+- ``repositories``: Contém as interfaces dos repositórios, responsáveis pela abstração do acesso ao banco de dados. Elas utilizam Spring Data JPA ou outros métodos para fornecer operações de CRUD (Create, Read, Update, Delete) e consultas personalizadas de forma automática.
+- ``services``: Contém a lógica de negócios da aplicação, como a manipulação de agendamentos, usuários e petshops.
+- ``resources``: Contém arquivos e pastas importantes utilizados na aplicação, como:
+    - ``application.properties``: Arquivo responsável pela configuração do Spring Boot.
+    - ``templates``: Contém arquivos HTML usados para enviar e-mails com informações personalisadas.
+    - ``images``: Contém imagens utlizadas no envio de e-mail.
 
 ---
 

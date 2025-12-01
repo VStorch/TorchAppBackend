@@ -80,7 +80,6 @@ public class AppointmentService {
             throw new IllegalStateException("Esse horário já foi reservado.");
         }
 
-        // ========== PROCESSAMENTO DO CUPOM DE DESCONTO ==========
         String couponCode = null;
         BigDecimal discountPercent = null;
         BigDecimal finalPrice = service.getPrice();
@@ -88,7 +87,7 @@ public class AppointmentService {
         if (request.getCouponCode() != null && !request.getCouponCode().trim().isEmpty()) {
             String inputCoupon = request.getCouponCode().trim().toUpperCase();
 
-            System.out.println("🎟️ Processando cupom: " + inputCoupon);
+            System.out.println("Processando cupom: " + inputCoupon);
 
             Optional<Promotion> promotionOpt = promotionRepository.findByCouponCode(inputCoupon);
 
@@ -98,7 +97,6 @@ public class AppointmentService {
 
             Promotion promotion = promotionOpt.get();
 
-            // Validar se o cupom ainda é válido
             if (!promotion.isValid()) {
                 throw new BadRequestException("Este cupom expirou em " + promotion.getValidity());
             }
@@ -121,13 +119,12 @@ public class AppointmentService {
             Double discountedValue = promotion.calculateDiscount(service.getPrice().doubleValue());
             finalPrice = BigDecimal.valueOf(discountedValue);
 
-            System.out.println("✅ CUPOM APLICADO COM SUCESSO:");
-            System.out.println("   Código: " + couponCode);
-            System.out.println("   Desconto: " + discountPercent + "%");
-            System.out.println("   Preço Original: R$ " + service.getPrice());
-            System.out.println("   Preço Final: R$ " + finalPrice);
+            System.out.println("Cupom aplicado com sucesso:");
+            System.out.println("Código: " + couponCode);
+            System.out.println("Desconto: " + discountPercent + "%");
+            System.out.println("Preço Original: R$ " + service.getPrice());
+            System.out.println("Preço Final: R$ " + finalPrice);
         }
-        // =======================================================
 
         slot.setBooked(true);
 
@@ -141,21 +138,19 @@ public class AppointmentService {
         appointment.setService(service);
         appointment.setSlot(slot);
 
-        // ========== ADICIONAR DADOS DO CUPOM ==========
         appointment.setCouponCode(couponCode);
         appointment.setDiscountPercent(discountPercent);
         appointment.setFinalPrice(finalPrice);
-        // ==============================================
 
         Appointment saved = appointmentRepository.save(appointment);
 
-        System.out.println("✅ AGENDAMENTO CRIADO:");
-        System.out.println("   ID: " + saved.getId());
-        System.out.println("   Serviço: " + saved.getService().getName());
-        System.out.println("   Preço Original: R$ " + saved.getService().getPrice());
-        System.out.println("   Cupom: " + saved.getCouponCode());
-        System.out.println("   Desconto: " + saved.getDiscountPercent() + "%");
-        System.out.println("   Preço Final: R$ " + saved.getFinalPrice());
+        System.out.println("AGENDAMENTO CRIADO:");
+        System.out.println("ID: " + saved.getId());
+        System.out.println("Serviço: " + saved.getService().getName());
+        System.out.println("Preço Original: R$ " + saved.getService().getPrice());
+        System.out.println("Cupom: " + saved.getCouponCode());
+        System.out.println("Desconto: " + saved.getDiscountPercent() + "%");
+        System.out.println("Preço Final: R$ " + saved.getFinalPrice());
 
         return AppointmentMapper.toResponse(saved);
     }
