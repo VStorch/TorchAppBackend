@@ -1,10 +1,10 @@
 package com.torchapp.demo.controllers;
 
-import com.torchapp.demo.dtos.Schedule.ScheduleBulkDTO;
-import com.torchapp.demo.dtos.Schedule.ScheduleBulkResponseDTO;
-import com.torchapp.demo.dtos.Schedule.ScheduleDTO;
-import com.torchapp.demo.dtos.Schedule.ScheduleResponseDTO;
-import com.torchapp.demo.models.Schedule;
+import com.torchapp.demo.dtos.schedule.ScheduleBulkDTO;
+import com.torchapp.demo.dtos.schedule.ScheduleBulkResponseDTO;
+import com.torchapp.demo.dtos.schedule.ScheduleDTO;
+import com.torchapp.demo.dtos.schedule.ScheduleResponseDTO;
+import com.torchapp.demo.enums.DayOfWeek;
 import com.torchapp.demo.services.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -74,7 +74,7 @@ public class ScheduleController {
     @GetMapping("/petshop/{petShopId}/day/{dayOfWeek}")
     public ResponseEntity<ScheduleResponseDTO> getScheduleByDay(
             @PathVariable Long petShopId,
-            @PathVariable Schedule.DayOfWeek dayOfWeek) {
+            @PathVariable DayOfWeek dayOfWeek) {
         ScheduleResponseDTO schedule = scheduleService.getScheduleByDay(petShopId, dayOfWeek);
         return ResponseEntity.ok(schedule);
     }

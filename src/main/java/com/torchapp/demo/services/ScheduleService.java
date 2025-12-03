@@ -1,10 +1,11 @@
 package com.torchapp.demo.services;
 
 
-import com.torchapp.demo.dtos.Schedule.ScheduleBulkDTO;
-import com.torchapp.demo.dtos.Schedule.ScheduleBulkResponseDTO;
-import com.torchapp.demo.dtos.Schedule.ScheduleDTO;
-import com.torchapp.demo.dtos.Schedule.ScheduleResponseDTO;
+import com.torchapp.demo.dtos.schedule.ScheduleBulkDTO;
+import com.torchapp.demo.dtos.schedule.ScheduleBulkResponseDTO;
+import com.torchapp.demo.dtos.schedule.ScheduleDTO;
+import com.torchapp.demo.dtos.schedule.ScheduleResponseDTO;
+import com.torchapp.demo.enums.DayOfWeek;
 import com.torchapp.demo.exceptions.ResourceNotFoundException;
 import com.torchapp.demo.models.Schedule;
 import com.torchapp.demo.repositories.ScheduleRepository;
@@ -28,20 +29,18 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
 
     // Mapeamento dos dias em português para o enum
-    private static final Map<String, Schedule.DayOfWeek> DAY_MAP = new HashMap<>();
+    private static final Map<String, DayOfWeek> DAY_MAP = new HashMap<>();
     static {
-        DAY_MAP.put("Seg", Schedule.DayOfWeek.SEG);
-        DAY_MAP.put("Ter", Schedule.DayOfWeek.TER);
-        DAY_MAP.put("Qua", Schedule.DayOfWeek.QUA);
-        DAY_MAP.put("Qui", Schedule.DayOfWeek.QUI);
-        DAY_MAP.put("Sex", Schedule.DayOfWeek.SEX);
-        DAY_MAP.put("Sáb", Schedule.DayOfWeek.SAB);
-        DAY_MAP.put("Dom", Schedule.DayOfWeek.DOM);
+        DAY_MAP.put("Ter", DayOfWeek.TER);
+        DAY_MAP.put("Qua", DayOfWeek.QUA);
+        DAY_MAP.put("Seg", DayOfWeek.SEG);
+        DAY_MAP.put("Qui", DayOfWeek.QUI);
+        DAY_MAP.put("Sex", DayOfWeek.SEX);
+        DAY_MAP.put("Sáb", DayOfWeek.SAB);
+        DAY_MAP.put("Dom", DayOfWeek.DOM);
     }
 
-    /**
-     * Salvar ou atualizar horários em lote (como vem do Flutter)
-     */
+     // Salvar ou atualizar horários em lote (como vem do Flutter)
     @Transactional
     public ScheduleBulkResponseDTO saveBulkSchedules(ScheduleBulkDTO bulkDTO) {
         try {
@@ -57,7 +56,7 @@ public class ScheduleService {
                     continue;
                 }
 
-                Schedule.DayOfWeek dayOfWeek = DAY_MAP.get(daySchedule.getDay());
+                DayOfWeek dayOfWeek = DAY_MAP.get(daySchedule.getDay());
                 if (dayOfWeek == null) {
                     continue; // Dia não reconhecido
                 }
@@ -91,9 +90,7 @@ public class ScheduleService {
         }
     }
 
-    /**
-     * Criar um horário individual
-     */
+     // Criar um horário individual
     @Transactional
     public ScheduleResponseDTO createSchedule(ScheduleDTO dto) {
         // Verificar se já existe horário para aquele dia
@@ -112,9 +109,7 @@ public class ScheduleService {
         return ScheduleResponseDTO.fromEntity(saved);
     }
 
-    /**
-     * Atualizar um horário existente
-     */
+     // Atualizar um horário existente
     @Transactional
     public ScheduleResponseDTO updateSchedule(Long id, ScheduleDTO dto) {
         Schedule schedule = scheduleRepository.findById(id)
@@ -130,9 +125,7 @@ public class ScheduleService {
         return ScheduleResponseDTO.fromEntity(updated);
     }
 
-    /**
-     * Buscar todos os horários de um Pet Shop
-     */
+    // Buscar todos os horários de um Pet Shop
     public List<ScheduleResponseDTO> getSchedulesByPetShopId(Long petShopId) {
         return scheduleRepository.findByPetShopIdAndIsActiveTrue(petShopId)
                 .stream()
@@ -140,10 +133,8 @@ public class ScheduleService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Buscar horário de um dia específico
-     */
-    public ScheduleResponseDTO getScheduleByDay(Long petShopId, Schedule.DayOfWeek dayOfWeek) {
+     // Buscar horário de um dia específico
+    public ScheduleResponseDTO getScheduleByDay(Long petShopId, DayOfWeek dayOfWeek) {
         Schedule schedule = scheduleRepository
                 .findByPetShopIdAndDayOfWeekAndIsActiveTrue(petShopId, dayOfWeek)
                 .orElseThrow(() -> new ResourceNotFoundException("Horário não encontrado para este dia"));
@@ -151,9 +142,8 @@ public class ScheduleService {
         return ScheduleResponseDTO.fromEntity(schedule);
     }
 
-    /**
-     * Deletar um horário
-     */
+
+     // Deletar um horário específico
     @Transactional
     public void deleteSchedule(Long id) {
         if (!scheduleRepository.existsById(id)) {
@@ -162,9 +152,8 @@ public class ScheduleService {
         scheduleRepository.deleteById(id);
     }
 
-    /**
-     * Deletar todos os horários de um Pet Shop
-     */
+
+     // Deletar todos os horários de um Pet Shop
     @Transactional
     public void deleteAllSchedulesByPetShop(Long petShopId) {
         scheduleRepository.deleteByPetShopId(petShopId);

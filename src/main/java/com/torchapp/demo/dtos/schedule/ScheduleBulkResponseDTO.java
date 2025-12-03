@@ -1,4 +1,4 @@
-package com.torchapp.demo.dtos.Schedule;
+package com.torchapp.demo.dtos.schedule;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

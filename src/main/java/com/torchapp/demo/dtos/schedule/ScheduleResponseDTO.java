@@ -1,11 +1,10 @@
-package com.torchapp.demo.dtos.Schedule;
+package com.torchapp.demo.dtos.schedule;
 
 import com.torchapp.demo.models.Schedule;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// DTO de resposta
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

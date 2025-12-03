@@ -1,6 +1,7 @@
 package com.torchapp.demo.repositories;
 
 
+import com.torchapp.demo.enums.DayOfWeek;
 import com.torchapp.demo.models.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,11 +24,11 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     // Buscar horário específico de um dia
     Optional<Schedule> findByPetShopIdAndDayOfWeekAndIsActiveTrue(
             Long petShopId,
-            Schedule.DayOfWeek dayOfWeek
+            DayOfWeek dayOfWeek
     );
 
     // Verificar se já existe horário para aquele dia
-    boolean existsByPetShopIdAndDayOfWeek(Long petShopId, Schedule.DayOfWeek dayOfWeek);
+    boolean existsByPetShopIdAndDayOfWeek(Long petShopId, DayOfWeek dayOfWeek);
 
     // Deletar todos os horários de um Pet Shop
     @Modifying
