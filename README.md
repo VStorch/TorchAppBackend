@@ -153,6 +153,97 @@ Abaixo está uma explicação sobre as principais pastas do projeto:
 
 ### Modelos Principais
 
+Os modelos abaixo representam as entidades do domínio do Torch, estruturadas seguindo boas práticas do JPA e refletindo o funcionamento do fluxo de agendamentos, pets, serviços e pet shops.
+
+- User<br>
+    Representa o usuário do sistema (cliente ou dono de pet shop).
+
+    **Principais atributos:**
+    - ``id``
+    - ``name``
+    - ``surname``
+    - ``phone``
+    - ``email``
+    - ``password``
+    - ``role`` (enum: CLIENT, OWNER)
+    - ``pets`` (lista de animais caso o usuário seja cliente)
+
+- Pet
+
+    **Principais atributos:**
+    - ``id``
+    - ``name``
+    - ``species``
+    - ``breed``
+    - ``weight``
+    - ``birthDate``
+    - ``user`` (Dono do pet)
+
+- PetShop<br>
+    Representa um pet shop cadastrado por um usuário do tipo "owner".
+
+    **Principais atributos**
+    - ``id``
+    - ``cep``, ``state``, ``state``, ``city``, ``neighborhood``, ``street``, ``number``, ``addressComplement``
+    - ``phone``
+    - ``email``
+    - ``cnpj``
+    - ``services``
+    - ``evaluations``
+    - ``appointments``
+    - ``owner`` (Usuário dono do pet shop)
+
+- PetShopInformation<br>
+    Usado para armazenar informações complementares e configuráveis do Pet Shop, permitindo que o dono personalize seu perfil.
+
+    **Principais atributos**
+    - ``id``
+    - ``name``
+    - ``description``
+    - ``logoUrl``
+    - ``services``
+    - ``instagram``
+    - ``facebook``
+    - ``website``
+    - ``whatsapp``
+    - ``comercialPhone``
+    - ``comercialEmail``
+    - ``userId``
+    - ``createdAt``
+    - ``updatedAt``
+
+- PetShopServices<br>
+    Serviços ofertados pelo pet shop.
+
+    **Principais atributos**
+    - ``id``
+    - ``name``
+    - ``price``
+    - ``petShop``
+    - ``appointments``
+    - ``availableSlots``
+
+- AvailableSlots
+    Horários disponíveis que o pet shop abre no sistema para seus serviços.
+
+    **Principais atributos**
+    - ``id``
+    - ``date``
+    - ``startTime``
+    - ``endTime``
+    - ``booked``
+
+- Schedule
+    Cadastro do horário de abertura e fechamento do pet shop.
+
+    **Principais atributos**
+    - ``id``
+    - ``petShopId``
+    - ``dayOfWeek``
+    - ``openTime``
+    - ``closeTime``
+    - ``isActive``
+
 ---
 
 ### Fluxo da API
