@@ -6,7 +6,7 @@
 
 Backend desenvolvido em Java Spring Boot para o projeto Torch, responsável por fornecer APIs para gestão de usuários, pets, serviços, agendamentos e Pet Shops.<br>
 O frontend está disponível [aqui.](https://github.com/VStorch/TorchApp)<br>
-Já a página de redirecionamento para a redefinição de senha está [aqui.](https://github.com/VStorch/PaginaRedirecionamento)
+A página de redirecionamento para a redefinição de senha está [aqui.](https://github.com/VStorch/PaginaRedirecionamento)
 
 ---
 
@@ -22,6 +22,7 @@ Já a página de redirecionamento para a redefinição de senha está [aqui.](ht
 - [Fluxo da API](#fluxo-da-api)
 - [Integração com o frontend](#integração-com-o-frontend)
 - [Desenvolvedores](#desenvolvedores)
+- [Documentação do Software](#documentação-do-software)
 - [Status do projeto](#status-do-projeto)
 
 ---
@@ -86,11 +87,23 @@ O Torch possui dois perfis de uso, cada um com funcionalidades específicas:
 
 ### Arquitetura
 
+
+O projeto segue uma arquitetura em **camadas**, separando responsabilidades e facilitando manutenção e crescimento do sistema:
+
+- **Controller** → Recebe as requisições HTTP  
+- **Service** → Contém a lógica de negócio  
+- **Repository** → Interface com o banco de dados  
+- **Models** → Representam as entidades JPA  
+- **DTOs / Mappers** → Transferência e conversão de dados  
+- **Infra / Config** → Configurações gerais e exceções  
+
+Essa estrutura segue boas práticas recomendadas pelo Spring Boot, garantindo organização e escalabilidade.
+
 ---
 
 ### Como rodar o projeto
 
-**Criar o banco de dados:**
+#### 1. Criar o banco de dados:
 
 ```bash
 
@@ -98,36 +111,41 @@ create database petshop character set utf8mb4 collate utf8mb4_unicode_ci;
 
 ```
 
-Para ele ser reconhecido pelo Spring Boot: Configure o aplication.properties com os dados do seu servidor MySQL.
+#### 2. Configurar o ``application.properties``
+Defina as credenciais do MySQL
+
+#### 3. Rodar o projeto
+Via terminal:
+
+```bash
+
+mvn spring-boot:run
+
+```
 
 ---
 
 ### Estrutura de pastas
 
 ```
-
 TorchAppBackend/
-├── .mvn/
 ├── docs/
 │   └── imgs/
 ├── src/
 │   └── main/
-│       └── java/
-│           └── com/
-│               └── torchapp/
-│                   └── demo/
-│                       ├── config/
-│                       ├── controllers/
-│                       ├── dtos/
-│                       ├── enums/
-│                       ├── exceptions/
-│                       ├── infra/
-│                       ├── mappers/
-│                       ├── models/
-│                       ├── repositories/
-│                       └── services/
+│       ├── java/
+│       │   └── com/torchapp/demo/
+│       │       ├── config/
+│       │       ├── controllers/
+│       │       ├── dtos/
+│       │       ├── enums/
+│       │       ├── exceptions/
+│       │       ├── infra/
+│       │       ├── mappers/
+│       │       ├── models/
+│       │       ├── repositories/
+│       │       └── services/
 │       └── resources/
-
 ```
 
 #### Pastas principais
@@ -248,9 +266,38 @@ Os modelos abaixo representam as entidades do domínio do Torch, estruturadas se
 
 ### Fluxo da API
 
+O fluxo básico da API funciona do seguinte modo:
+
+1. Cliente ou Dono faz login ou cria conta
+2. O usuário realiza ações conforme seu perfil, como:
+    - cadastrar pets
+    - cadastrar serviços
+    - abrir horários
+    - agendar um serviço
+3. A API processa a solicitação no **Service**, valida dados e aciona o **Repository**
+4. A resposta é retornada ao frontend via JSON
+5. Para eventos especiais (ex.: redefinição de senha), o backend envia e-mails via SMTP configurado
+
+Este fluxo é construído sobre princípios REST, com endpoints organizados por recurso.
+
 ---
 
 ### Integração com o frontend
+
+O backend foi desenvolvido para consumo direto pelo app Flutter do Torch, utilizando:
+
+- Requisições HTTP (via http)
+- Endpoints padronizados
+- Dados transferidos em JSON
+
+A integração (dentre outras funcionalidades) inclui:
+
+- Login/Registro
+- CRUD de pets
+- Listagem de pet shops
+- Listagem de serviços
+- Agendamentos (criação / listagem)
+- Recuperação de senha via token
 
 ---
 
@@ -259,6 +306,12 @@ Os modelos abaixo representam as entidades do domínio do Torch, estruturadas se
 - [João Pedro Pitz](https://github.com/joaopedropitzz)
 - [Leonardo Cortelim dos Santos](https://github.com/LeonardoCortelim)
 - [Vinícius Storch](https://github.com/VStorch)
+
+---
+
+### Documentação do Software
+
+Acesse a documentação em: [Torch](https://docs.google.com/document/d/1rGbcGYY655Smcz7teA9VlWOLTOMnTLguNPUWll94FlI/edit?tab=t.0)
 
 ---
 
