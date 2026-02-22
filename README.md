@@ -322,7 +322,7 @@ A integração (dentre outras funcionalidades) inclui:
 
 <p align="center">Clique na imagem para assistir no YouTube</p>
 <p align="center">
-  <sub>Vídeo gravado por Leonardo Cortelim dos Santos</sub>
+  <sub>Vídeo sem áudio • gravação por Leonardo Cortelim dos Santos</sub>
 </p>
 
 ---
