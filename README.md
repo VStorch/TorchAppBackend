@@ -22,6 +22,7 @@ A página de redirecionamento para a redefinição de senha está [aqui.](https:
 - [Fluxo da API](#fluxo-da-api)
 - [Integração com o frontend](#integração-com-o-frontend)
 - [Desenvolvedores](#desenvolvedores)
+- [Vídeo de Demonstração](#vídeo-de-demonstração)
 - [Documentação do Software](#documentação-do-software)
 - [Status do projeto](#status-do-projeto)
 
@@ -306,6 +307,23 @@ A integração (dentre outras funcionalidades) inclui:
 - [João Pedro Pitz](https://github.com/joaopedropitzz)
 - [Leonardo Cortelim dos Santos](https://github.com/LeonardoCortelim)
 - [Vinícius Storch](https://github.com/VStorch)
+
+---
+
+### Vídeo de Demonstração
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=xfTUIMbSeD0" target="_blank">
+    <img src="https://img.youtube.com/vi/xfTUIMbSeD0/maxresdefault.jpg" 
+         alt="Vídeo de Demonstração Torch"
+         width="700">
+  </a>
+</p>
+
+<p align="center">Clique na imagem para assistir no YouTube</p>
+<p align="center">
+  <sub>Vídeo gravado por Leonardo Cortelim dos Santos</sub>
+</p>
 
 ---
 
